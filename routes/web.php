@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\NominationController;
 use App\Http\Controllers\ElectionController;
@@ -13,24 +14,13 @@ use App\Http\Controllers\MemberController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
-Route::get('/', function () {
-    $images = \App\Models\Gallery::where('is_published', true)->latest()->get();
-    return view('welcome', compact('images'));
-});
+Route::get('/', [HomeController::class, 'welcome'])->name('home');
 
-Route::get('/agenda', function () {
-    $agendas = \App\Models\Agenda::orderBy('order')->get();
-    return view('agenda', compact('agendas'));
-})->name('agenda');
-Route::get('/gallery', function () {
-    $images = \App\Models\Gallery::where('is_published', true)->latest()->get();
-    return view('gallery.index', compact('images'));
-})->name('gallery');
+Route::get('/agenda', [HomeController::class, 'agenda'])->name('agenda');
+Route::get('/gallery', [HomeController::class, 'gallery'])->name('gallery');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
 
     Route::middleware(['paid'])->group(function () {
         Route::resource('nominations', NominationController::class)->only(['index', 'store', 'destroy']);
@@ -45,12 +35,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/members', [MemberController::class, 'index'])->name('members.index');
         Route::get('/members/{user}', [MemberController::class, 'show'])->name('members.show');
         
-        Route::get('/members/search', function (Request $request) {
-            return \App\Models\User::where('name', 'like', '%' . $request->q . '%')
-                ->where('id', '!=', auth()->id())
-                ->limit(10)
-                ->get(['id', 'name']);
-        })->name('members.search');
+        Route::get('/members/search', [MemberController::class, 'search'])->name('members.search');
     });
 
     Route::post('/payment/additional', [PaymentController::class, 'storeManual'])->name('payment.storeAdditional');
@@ -61,17 +46,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 Route::middleware(['auth', 'verified', 'role:Super Admin|Election Admin|Finance Admin'])->group(function () {
-    Route::get('/admin/dashboard', function () {
-        return view('admin.dashboard', [
-            'links' => '<div class="flex flex-wrap gap-4">
-                        <a href="'.route('admin.members').'" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">Manage Members</a>
-                        <a href="'.route('admin.nominations').'" class="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition">Review Nominations</a>
-                        <a href="'.route('admin.agenda.index').'" class="px-4 py-2 bg-emerald-600 text-white rounded-md hover:bg-emerald-700 transition">Manage Agenda</a>
-                        <a href="'.route('admin.gallery.index').'" class="px-4 py-2 bg-pink-600 text-white rounded-md hover:bg-pink-700 transition">Manage Gallery</a>
-                        <button class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition">Election Controls</button>
-                    </div>'
-        ]);
-    })->name('admin.dashboard');
+    Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
     Route::get('/admin/members', [AdminController::class, 'members'])->name('admin.members');
     Route::post('/admin/members/{user}/verify', [AdminController::class, 'verifyPayment'])->name('admin.members.verify');

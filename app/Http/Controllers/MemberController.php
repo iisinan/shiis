@@ -32,4 +32,12 @@ class MemberController extends Controller
 
         return view('members.show', compact('user'));
     }
+
+    public function search(Request $request)
+    {
+        return User::where('name', 'like', '%' . $request->q . '%')
+            ->where('id', '!=', auth()->id())
+            ->limit(10)
+            ->get(['id', 'name']);
+    }
 }

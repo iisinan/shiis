@@ -78,4 +78,17 @@ class AdminController extends Controller
         $logs = \App\Models\AuditLog::with('user')->latest()->paginate(50);
         return view('admin.logs.index', compact('logs'));
     }
+
+    public function dashboard()
+    {
+        return view('admin.dashboard', [
+            'links' => '<div class="flex flex-wrap gap-4">
+                        <a href="'.route('admin.members').'" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">Manage Members</a>
+                        <a href="'.route('admin.nominations').'" class="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition">Review Nominations</a>
+                        <a href="'.route('admin.agenda.index').'" class="px-4 py-2 bg-emerald-600 text-white rounded-md hover:bg-emerald-700 transition">Manage Agenda</a>
+                        <a href="'.route('admin.gallery.index').'" class="px-4 py-2 bg-pink-600 text-white rounded-md hover:bg-pink-700 transition">Manage Gallery</a>
+                        <button class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition">Election Controls</button>
+                    </div>'
+        ]);
+    }
 }
