@@ -20,7 +20,7 @@ Route::get('/agenda', [HomeController::class, 'agenda'])->name('agenda');
 Route::get('/gallery', [HomeController::class, 'gallery'])->name('gallery');
 Route::get('/debug-logs', [HomeController::class, 'debugLogs']);
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
 
     Route::middleware(['paid'])->group(function () {
@@ -46,7 +46,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware(['auth', 'verified', 'role:Super Admin|Election Admin|Finance Admin'])->group(function () {
+Route::middleware(['auth', 'role:Super Admin|Election Admin|Finance Admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
     Route::get('/admin/members', [AdminController::class, 'members'])->name('admin.members');
@@ -70,7 +70,7 @@ Route::middleware(['auth', 'verified', 'role:Super Admin|Election Admin|Finance 
     Route::delete('/admin/agenda/{agenda}', [AdminAgendaController::class, 'destroy'])->name('admin.agenda.destroy');
 });
 
-Route::middleware(['auth', 'verified', 'role:Accountant|Super Admin'])->group(function () {
+Route::middleware(['auth', 'role:Accountant|Super Admin'])->group(function () {
     Route::get('/accountant/dashboard', [AccountantController::class, 'dashboard'])->name('accountant.dashboard');
     Route::get('/accountant/export', [AccountantController::class, 'exportVerifiedPayments'])->name('accountant.export');
     Route::post('/accountant/verify/{user}', [AccountantController::class, 'verifyPayment'])->name('accountant.verify');
