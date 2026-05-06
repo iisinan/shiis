@@ -33,4 +33,12 @@ class HomeController extends Controller
     {
         return view('dashboard');
     }
+
+    public function debugLogs()
+    {
+        if (file_exists(storage_path('logs/laravel.log'))) {
+            return response()->file(storage_path('logs/laravel.log'));
+        }
+        return "No log file found.";
+    }
 }

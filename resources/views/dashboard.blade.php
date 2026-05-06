@@ -178,8 +178,11 @@
                         
                         <div class="p-8 space-y-8">
                             @php
-                                $activeElection = \App\Models\Election::where('is_active', true)->first();
-                                $results = $activeElection ? \App\Models\Vote::where('election_id', $activeElection->id)
+                                $hasElectionsTable = \Illuminate\Support\Facades\Schema::hasTable('elections');
+                                $hasVotesTable = \Illuminate\Support\Facades\Schema::hasTable('votes');
+                                
+                                $activeElection = $hasElectionsTable ? \App\Models\Election::where('is_active', true)->first() : null;
+                                $results = ($activeElection && $hasVotesTable) ? \App\Models\Vote::where('election_id', $activeElection->id)
                                     ->select('position', 'candidate_id', \DB::raw('count(*) as total_votes'))
                                     ->groupBy('position', 'candidate_id')
                                     ->with('candidate.user')
