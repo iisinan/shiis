@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('content');
             $table->string('type')->default('general'); // general, event, election
-            $table->boolean('is_active')->default(true);
+            $table->boolean('is_published')->default(true);
             $table->timestamps();
         });
     }
