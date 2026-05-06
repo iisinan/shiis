@@ -7,6 +7,9 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\AdminAgendaController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\AccountantController;
+use App\Http\Controllers\MemberController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
@@ -39,8 +42,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/gallery', [GalleryController::class, 'store'])->name('gallery.store');
         Route::delete('/gallery/{gallery}', [GalleryController::class, 'destroy'])->name('gallery.destroy');
 
-        Route::get('/members', [\App\Http\Controllers\MemberController::class, 'index'])->name('members.index');
-        Route::get('/members/{user}', [\App\Http\Controllers\MemberController::class, 'show'])->name('members.show');
+        Route::get('/members', [MemberController::class, 'index'])->name('members.index');
+        Route::get('/members/{user}', [MemberController::class, 'show'])->name('members.show');
         
         Route::get('/members/search', function (Request $request) {
             return \App\Models\User::where('name', 'like', '%' . $request->q . '%')
