@@ -42,13 +42,14 @@
 </head>
 <body class="antialiased text-green-900 font-inter bg-white">
     <!-- Navbar -->
-    <nav class="fixed w-full z-50 glass-card transition-all duration-300 border-b border-emerald-100">
+    <nav class="fixed w-full z-50 glass-card transition-all duration-300 border-b border-emerald-100" x-data="{ open: false }">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
                 <div class="flex-shrink-0 flex items-center gap-3">
                     <img src="{{ asset('images/logo.png') }}" alt="SHIIS Logo" class="w-12 h-12 rounded-full object-cover shadow-md border-2 border-emerald-600">
                     <span class="font-outfit font-bold text-xl tracking-tight text-emerald-900">SHIIS '05</span>
                 </div>
+                <!-- Desktop Menu -->
                 <div class="hidden md:flex space-x-8 items-center text-sm font-semibold">
                     <a href="{{ route('agenda') }}" class="text-emerald-800 hover:text-emerald-600 transition">Agenda</a>
                     <a href="{{ route('gallery.index') }}" class="text-emerald-800 hover:text-emerald-600 transition">Gallery</a>
@@ -62,6 +63,40 @@
                         <a href="{{ route('register') }}" class="px-6 py-2 rounded-full bg-emerald-700 text-white hover:bg-emerald-800 transition shadow-lg">Join Reunion</a>
                     @endauth
                 </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="flex md:hidden">
+                    <button @click="open = !open" class="text-emerald-900 hover:text-emerald-600 focus:outline-none">
+                        <svg class="h-8 w-8" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                            <path :class="{'hidden': open, 'inline-flex': !open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                            <path :class="{'hidden': !open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Panel -->
+        <div x-show="open" 
+             x-transition:enter="transition ease-out duration-200"
+             x-transition:enter-start="opacity-0 -translate-y-4"
+             x-transition:enter-end="opacity-100 translate-y-0"
+             x-transition:leave="transition ease-in duration-150"
+             x-transition:leave-start="opacity-100 translate-y-0"
+             x-transition:leave-end="opacity-0 -translate-y-4"
+             class="md:hidden bg-white border-t border-emerald-50 px-4 pt-2 pb-6 space-y-4 shadow-xl">
+            <a href="{{ route('agenda') }}" class="block text-lg font-bold text-emerald-900 px-4 py-2 hover:bg-emerald-50 rounded-xl">Agenda</a>
+            <a href="{{ route('gallery.index') }}" class="block text-lg font-bold text-emerald-900 px-4 py-2 hover:bg-emerald-50 rounded-xl">Gallery</a>
+            <a href="#about" @click="open = false" class="block text-lg font-bold text-emerald-900 px-4 py-2 hover:bg-emerald-50 rounded-xl">About Us</a>
+            <a href="#gallery" @click="open = false" class="block text-lg font-bold text-emerald-900 px-4 py-2 hover:bg-emerald-50 rounded-xl">Memories</a>
+            <a href="#executives" @click="open = false" class="block text-lg font-bold text-emerald-900 px-4 py-2 hover:bg-emerald-50 rounded-xl">Executives</a>
+            <div class="pt-4 border-t border-emerald-50 flex flex-col gap-3">
+                @auth
+                    <a href="{{ url('/dashboard') }}" class="block text-center py-4 bg-emerald-700 text-white font-bold rounded-2xl shadow-lg">Go to Dashboard</a>
+                @else
+                    <a href="{{ route('login') }}" class="block text-center py-4 text-emerald-900 font-bold border-2 border-emerald-100 rounded-2xl">Login</a>
+                    <a href="{{ route('register') }}" class="block text-center py-4 bg-emerald-700 text-white font-bold rounded-2xl shadow-lg">Join Reunion</a>
+                @endauth
             </div>
         </div>
     </nav>
