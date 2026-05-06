@@ -31,7 +31,16 @@ class HomeController extends Controller
 
     public function dashboard()
     {
-        return view('dashboard');
+        try {
+            return view('dashboard');
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString()
+            ], 500);
+        }
     }
 
     public function debugLogs()
