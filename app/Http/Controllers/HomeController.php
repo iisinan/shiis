@@ -31,45 +31,6 @@ class HomeController extends Controller
 
     public function dashboard()
     {
-        try {
-            return view('dashboard')->render();
-        } catch (\Throwable $e) {
-            return response()->json([
-                'error' => $e->getMessage(),
-                'file' => $e->getFile(),
-                'line' => $e->getLine(),
-                'type' => get_class($e),
-                'trace' => collect($e->getTrace())->take(5)
-            ], 500);
-        }
-    }
-
-    public function debugLogs()
-    {
-        $info = [];
-        
-        // Check DB
-        try {
-            \DB::connection()->getPdo();
-            $info['db_connection'] = 'OK';
-            $info['tables'] = [
-                'users' => \Schema::hasTable('users'),
-                'roles' => \Schema::hasTable('roles'),
-                'payments' => \Schema::hasTable('payments'),
-                'elections' => \Schema::hasTable('elections'),
-            ];
-        } catch (\Exception $e) {
-            $info['db_error'] = $e->getMessage();
-        }
-
-        // Check Logs
-        if (file_exists(storage_path('logs/laravel.log'))) {
-            $info['log_file'] = 'exists';
-        } else {
-            $files = scandir(storage_path('logs'));
-            $info['log_folder_files'] = $files;
-        }
-
-        return response()->json($info);
+        return view('dashboard');
     }
 }

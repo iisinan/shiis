@@ -17,8 +17,8 @@ use Illuminate\Http\Request;
 Route::get('/', [HomeController::class, 'welcome'])->name('home');
 
 Route::get('/agenda', [HomeController::class, 'agenda'])->name('agenda');
+
 Route::get('/gallery', [HomeController::class, 'gallery'])->name('gallery');
-Route::get('/debug-logs', [HomeController::class, 'debugLogs']);
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
