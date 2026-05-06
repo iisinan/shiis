@@ -197,7 +197,7 @@
                                         @foreach($cands->sortByDesc('total_votes') as $res)
                                             <div class="relative">
                                                 <div class="flex justify-between items-center mb-1 text-[11px] font-bold">
-                                                    <span class="text-emerald-950">{{ $res->candidate->user->name }}</span>
+                                                    <span class="text-emerald-950">{{ optional($res->candidate->user)->name ?? 'Unknown Candidate' }}</span>
                                                     <span class="text-emerald-900">{{ $res->total_votes }} votes</span>
                                                 </div>
                                                 <div class="w-full bg-emerald-50 rounded-full h-1.5 overflow-hidden">
