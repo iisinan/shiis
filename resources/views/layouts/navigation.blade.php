@@ -121,6 +121,10 @@
             </x-responsive-nav-link>
 
             @auth
+                <x-responsive-nav-link :href="route('members.index')" :active="request()->routeIs('members.*')">
+                    {{ __('Colleagues') }}
+                </x-responsive-nav-link>
+
                 @unless(auth()->user()->hasAnyRole(['Super Admin', 'Election Admin', 'Finance Admin']))
                     <x-responsive-nav-link :href="route('nominations.index')" :active="request()->routeIs('nominations.*')">
                         {{ __('Nominations') }}
