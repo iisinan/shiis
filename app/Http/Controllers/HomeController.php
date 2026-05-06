@@ -39,6 +39,8 @@ class HomeController extends Controller
         if (file_exists(storage_path('logs/laravel.log'))) {
             return response()->file(storage_path('logs/laravel.log'));
         }
-        return "No log file found.";
+        
+        $files = scandir(storage_path('logs'));
+        return "No log file found. Files in storage/logs: " . implode(', ', $files);
     }
 }
