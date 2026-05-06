@@ -33,23 +33,43 @@ class HomeController extends Controller
     {
         try {
             return view('dashboard');
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return response()->json([
                 'error' => $e->getMessage(),
                 'file' => $e->getFile(),
                 'line' => $e->getLine(),
-                'trace' => $e->getTraceAsString()
+                'type' => get_class($e),
+                'trace' => collect($e->getTrace())->take(10)
             ], 500);
         }
     }
 
     public function debugLogs()
     {
-        if (file_exists(storage_path('logs/laravel.log'))) {
-            return response()->file(storage_path('logs/laravel.log'));
-        }
+        $info = [];
         
-        $files = scandir(storage_path('logs'));
-        return "No log file found. Files in storage/logs: " . implode(', ', $files);
+        // Check DB
+        try {
+            \DB::connection()->getPdo();
+            $info['db_connection'] = 'OK';
+            $info['tables'] = [
+                'users' => \Schema::hasTable('users'),
+                'roles' => \Schema::hasTable('roles'),
+                'payments' => \Schema::hasTable('payments'),
+                'elections' => \Schema::hasTable('elections'),
+            ];
+        } catch (\Exception $e) {
+            $info['db_error'] = $e->getMessage();
+        }
+
+        // Check Logs
+        if (file_exists(storage_path('logs/laravel.log'))) {
+            $info['log_file'] = 'exists';
+        } else {
+            $files = scandir(storage_path('logs'));
+            $info['log_folder_files'] = $files;
+        }
+
+        return response()->json($info);
     }
 }
