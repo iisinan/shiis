@@ -32,14 +32,14 @@ class HomeController extends Controller
     public function dashboard()
     {
         try {
-            return view('dashboard');
+            return view('dashboard')->render();
         } catch (\Throwable $e) {
             return response()->json([
                 'error' => $e->getMessage(),
                 'file' => $e->getFile(),
                 'line' => $e->getLine(),
                 'type' => get_class($e),
-                'trace' => collect($e->getTrace())->take(10)
+                'trace' => collect($e->getTrace())->take(5)
             ], 500);
         }
     }
