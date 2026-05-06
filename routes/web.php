@@ -35,8 +35,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/elections/{election}/vote', [ElectionController::class, 'vote'])->name('elections.vote');
         Route::get('/elections/results', [ElectionController::class, 'results'])->name('elections.results');
         
-        Route::post('/payment/additional', [PaymentController::class, 'storeManual'])->name('payment.storeAdditional');
-        
         Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery.index');
         Route::post('/gallery', [GalleryController::class, 'store'])->name('gallery.store');
         Route::delete('/gallery/{gallery}', [GalleryController::class, 'destroy'])->name('gallery.destroy');
@@ -51,6 +49,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 ->get(['id', 'name']);
         })->name('members.search');
     });
+
+    Route::post('/payment/additional', [PaymentController::class, 'storeManual'])->name('payment.storeAdditional');
     
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

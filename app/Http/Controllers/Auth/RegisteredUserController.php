@@ -66,16 +66,18 @@ class RegisteredUserController extends Controller
 
         // Send Acknowledgment Email
         try {
-            Mail::to($user->email)->send(new RegistrationAcknowledgment($user, $receiptPath));
+            Mail::to($user->email)->queue(new RegistrationAcknowledgment($user, $receiptPath));
             
             // Notify Accountants
             $accountants = User::role('Accountant')->get();
+            $latestPayment = $user->payments()->latest()->first();
+            
             foreach ($accountants as $accountant) {
-                Mail::to($accountant->email)->queue(new \App\Mail\NewRegistrationForAccountantMail($user, $user->payments->first()));
+                Mail::to($accountant->email)->queue(new \App\Mail\NewRegistrationForAccountantMail($user, $latestPayment));
             }
         } catch (\Exception $e) {
             // Silently fail if mail fails, or log it
-            AuditLogger::log('Email Failure', "Failed to send registration/accountant notification emails.");
+            AuditLogger::log('Email Failure', "Failed to queue registration/accountant notification emails.");
         }
 
         return redirect(route('dashboard', absolute: false));
