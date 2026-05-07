@@ -20,33 +20,40 @@
                     <p class="text-emerald-800/40 font-bold text-xl uppercase tracking-widest">Schedule is being finalized.</p>
                 </div>
             @else
-                <div class="relative">
-                    <!-- Vertical Line -->
-                    <div class="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-emerald-100 rounded-full hidden md:block"></div>
-                    
-                    <div class="space-y-16">
+                <div class="max-w-3xl mx-auto">
+                    <div class="space-y-8">
                         @foreach($agendas as $index => $item)
-                            <div class="relative flex flex-col md:flex-row items-center justify-between gap-8 md:gap-0">
-                                <!-- Dot -->
-                                <div class="absolute left-1/2 transform -translate-x-1/2 w-6 h-6 bg-emerald-900 rounded-full border-4 border-white shadow-lg z-10 hidden md:block"></div>
+                            <div class="relative pl-12 md:pl-20 group">
+                                <!-- Vertical Line Fragment -->
+                                @if(!$loop->last)
+                                    <div class="absolute left-[23px] md:left-[31px] top-10 bottom-0 w-0.5 bg-emerald-100 group-hover:bg-emerald-300 transition-colors duration-500"></div>
+                                @endif
 
-                                <!-- Left/Right Content -->
-                                <div class="w-full md:w-[42%] {{ $index % 2 == 0 ? 'md:text-right' : 'md:order-last' }}">
-                                    <div class="bg-white p-8 rounded-[2rem] border border-emerald-100 shadow-xl shadow-emerald-900/5 hover:border-emerald-300 transition duration-500 transform hover:-translate-y-2">
-                                        <span class="text-emerald-600 font-black text-xs uppercase tracking-[0.2em] mb-2 block">{{ $item->time }}</span>
-                                        <h4 class="text-2xl font-bold text-emerald-950 font-outfit mb-3">{{ $item->title }}</h4>
-                                        <p class="text-emerald-700/60 text-sm leading-relaxed">{{ $item->description }}</p>
-                                        @if($item->location)
-                                            <div class="mt-4 flex items-center gap-2 {{ $index % 2 == 0 ? 'md:justify-end' : '' }}">
-                                                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                                                <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-widest">{{ $item->location }}</span>
-                                            </div>
-                                        @endif
-                                    </div>
+                                <!-- Order Circle -->
+                                <div class="absolute left-0 top-0 w-12 h-12 md:w-16 md:h-16 bg-white border-2 border-emerald-100 rounded-2xl flex items-center justify-center shadow-lg group-hover:border-emerald-600 transition-all duration-500 z-10">
+                                    <span class="text-xl md:text-2xl font-black text-emerald-900 font-outfit">{{ $item->order }}</span>
                                 </div>
 
-                                <!-- Empty Space -->
-                                <div class="hidden md:block w-[42%]"></div>
+                                <!-- Content Card -->
+                                <div class="bg-white p-6 md:p-8 rounded-[2rem] border border-emerald-50 shadow-xl shadow-emerald-900/5 group-hover:border-emerald-200 transition-all duration-500 transform group-hover:-translate-x-1">
+                                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-4">
+                                        <h4 class="text-xl md:text-2xl font-extrabold text-emerald-950 font-outfit">{{ $item->title }}</h4>
+                                        <span class="inline-block px-4 py-1 bg-emerald-900 text-white text-[10px] font-black rounded-full uppercase tracking-[0.2em] w-fit">
+                                            {{ $item->time }}
+                                        </span>
+                                    </div>
+                                    
+                                    <p class="text-emerald-700/70 text-sm md:text-base leading-relaxed mb-4">
+                                        {{ $item->description }}
+                                    </p>
+
+                                    @if($item->location)
+                                        <div class="flex items-center gap-2 text-emerald-400">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                            <span class="text-[10px] font-bold uppercase tracking-widest">{{ $item->location }}</span>
+                                        </div>
+                                    @endif
+                                </div>
                             </div>
                         @endforeach
                     </div>
