@@ -51,9 +51,15 @@ class RegistrationAcknowledgment extends Mailable
      */
     public function attachments(): array
     {
-        return [
-            Attachment::fromPath(storage_path('app/public/' . $this->receiptPath))
-                ->as('payment_receipt.' . pathinfo($this->receiptPath, PATHINFO_EXTENSION))
-        ];
+        $path = storage_path('app/public/' . $this->receiptPath);
+        
+        if (file_exists($path)) {
+            return [
+                Attachment::fromPath($path)
+                    ->as('payment_receipt.' . pathinfo($this->receiptPath, PATHINFO_EXTENSION))
+            ];
+        }
+
+        return [];
     }
 }

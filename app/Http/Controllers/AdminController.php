@@ -64,6 +64,14 @@ class AdminController extends Controller
 
         AuditLogger::log('Nomination Approved', "Admin approved nomination for {$nomination->nominee->name} as {$nomination->position}");
 
+        // Notify the nominee
+        try {
+            \Illuminate\Support\Facades\Mail::to($nomination->nominee->email)
+                ->queue(new \App\Mail\NominationApprovedMail($nomination->nominee, $nomination->position));
+        } catch (\Exception $e) {
+            \App\Services\AuditLogger::log('Email Failure', "Failed to notify nominee {$nomination->nominee->email}");
+        }
+
         return back()->with('success', 'Nomination approved and member is now a candidate.');
     }
 

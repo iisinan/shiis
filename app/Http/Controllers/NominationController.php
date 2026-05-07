@@ -75,6 +75,18 @@ class NominationController extends Controller
 
         if ($count > 0) {
             AuditLogger::log('Bulk Nomination', "User nominated members for {$count} executive positions.");
+            
+            // Notify Election Admins
+            try {
+                $admins = User::role(['Super Admin', 'Election Admin'])->get();
+                foreach ($admins as $admin) {
+                    \Illuminate\Support\Facades\Mail::to($admin->email)
+                        ->queue(new \App\Mail\NewNominationAdminMail(Auth::user(), User::find(reset($request->nominees)), 'Multiple Positions'));
+                }
+            } catch (\Exception $e) {
+                // Silently fail mail
+            }
+
             return redirect()->route('nominations.index')->with('success', 'Your executive team nominations have been saved.');
         }
 
