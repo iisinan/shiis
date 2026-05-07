@@ -56,50 +56,78 @@ class DatabaseSeeder extends Seeder
         $agendaItems = [
             [
                 'time' => '09:00 AM',
-                'title' => 'Arrival & Registration',
-                'description' => 'Welcome home! Collect your reunion kit, name tag, and commemorative souvenir at the entrance.',
-                'location' => 'Main Reception Hall',
+                'title' => 'Opening Prayer',
+                'description' => 'Commencing the reunion with a moment of spiritual reflection and prayer.',
+                'location' => 'Main Hall',
                 'order' => 1
             ],
             [
-                'time' => '10:00 AM',
-                'title' => 'Opening Ceremony',
-                'description' => 'Official kick-off of the SHIIS 05 Reunion. Welcome address by the organizing committee and special guest speakers.',
-                'location' => 'Grand Ballroom',
+                'time' => '09:15 AM',
+                'title' => 'Recitation of Holy Quràn',
+                'description' => 'Soulful recitation of the Holy Quràn to bless the gathering.',
+                'location' => 'Main Hall',
                 'order' => 2
             ],
             [
-                'time' => '11:30 AM',
-                'title' => 'Networking & Refreshments',
-                'description' => 'Connect with old friends over light snacks and drinks. A great time to catch up on the last two decades.',
-                'location' => 'Garden Terrace',
+                'time' => '09:45 AM',
+                'title' => 'Group Photograph',
+                'description' => 'Capturing the historic reunion of the Class of 2005.',
+                'location' => 'Front Courtyard',
                 'order' => 3
             ],
             [
-                'time' => '01:00 PM',
-                'title' => 'The Journey So Far (Panel)',
-                'description' => 'An inspiring session featuring alumni sharing their career paths, life lessons, and success stories.',
-                'location' => 'Auditorium',
+                'time' => '10:30 AM',
+                'title' => 'Welcome Address',
+                'description' => 'Official welcome speech by the Chairman of the organizing committee.',
+                'location' => 'Main Hall',
                 'order' => 4
             ],
             [
-                'time' => '03:00 PM',
-                'title' => 'Gala Dinner & Awards',
-                'description' => 'A premium 3-course dinner followed by special recognition awards for outstanding alumni.',
-                'location' => 'Main Banquet Hall',
+                'time' => '11:00 AM',
+                'title' => 'Self Introduction by Members',
+                'description' => 'Opportunity for all attendees to re-introduce themselves and share their journey.',
+                'location' => 'Main Hall',
                 'order' => 5
             ],
             [
-                'time' => '06:00 PM',
-                'title' => 'Closing Remarks & Photos',
-                'description' => 'Final group photography and official closing of the reunion festivities.',
-                'location' => 'Front Courtyard',
+                'time' => '12:30 PM',
+                'title' => 'Class Updates & Reflections',
+                'description' => 'Updates on class members and reflections on our shared history.',
+                'location' => 'Main Hall',
                 'order' => 6
+            ],
+            [
+                'time' => '02:00 PM',
+                'title' => 'Leadership & Elections',
+                'description' => 'Deliberations on class affairs, confirmation of nominations, and live digital election on the website.',
+                'location' => 'Main Hall',
+                'order' => 7
+            ],
+            [
+                'time' => '03:30 PM',
+                'title' => 'General Discussions',
+                'description' => 'Open floor for contributions and discussions on future class projects.',
+                'location' => 'Main Hall',
+                'order' => 8
+            ],
+            [
+                'time' => '04:30 PM',
+                'title' => 'Social Interaction',
+                'description' => 'Networking session and informal social interaction among colleagues.',
+                'location' => 'Garden Area',
+                'order' => 9
+            ],
+            [
+                'time' => '05:30 PM',
+                'title' => 'Closing Prayer',
+                'description' => 'Closing the event with prayers and final remarks.',
+                'location' => 'Main Hall',
+                'order' => 10
             ]
         ];
 
         foreach ($agendaItems as $item) {
-            \App\Models\Agenda::firstOrCreate(['title' => $item['title']], $item);
+            \App\Models\Agenda::updateOrCreate(['title' => $item['title']], $item);
         }
     }
 }
