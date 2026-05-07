@@ -52,6 +52,9 @@ class DatabaseSeeder extends Seeder
         );
         $accountant->assignRole('Accountant');
 
+        // Clear existing agenda to ensure perfect order
+        \App\Models\Agenda::truncate();
+
         // Default Agenda
         $agendaItems = [
             [
