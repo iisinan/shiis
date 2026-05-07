@@ -44,7 +44,7 @@
                                     </div>
                                     
                                     <p class="text-emerald-700/70 text-sm md:text-base leading-relaxed mb-4">
-                                        {{ $item->description }}
+                                        {!! nl2br(e($item->description)) !!}
                                     </p>
 
                                     @if($item->location)

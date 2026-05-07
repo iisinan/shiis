@@ -98,8 +98,8 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'time' => '02:00 PM',
-                'title' => 'Leadership & Elections',
-                'description' => 'Deliberations on class affairs, confirmation of nominations, and live digital election on the website.',
+                'title' => 'Deliberations on Class Affairs and Formation of Leadership Structure',
+                'description' => "Deep dive into class administration followed by the leadership transition cycle:\n• Confirmation of Nomination\n• Activation of Election on the Website\n• Election Starts\n• Election Ends\n• Results Announcement",
                 'location' => 'Main Hall',
                 'order' => 7
             ],
