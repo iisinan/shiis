@@ -20,7 +20,7 @@ class GalleryController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'images' => 'required|array|max:10',
-            'images.*' => 'image|mimes:jpg,jpeg,png,webp|max:10240',
+            'images.*' => 'image|mimes:jpg,jpeg,png,webp,jfif|max:20480',
         ]);
 
         $count = 0;
