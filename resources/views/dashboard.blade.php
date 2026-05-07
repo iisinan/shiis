@@ -122,6 +122,25 @@
                         </a>
                     </div>
 
+                    <!-- Shared Memories Card -->
+                    <div class="bg-white rounded-[2.5rem] p-10 border border-emerald-100 shadow-xl shadow-emerald-900/5 flex flex-col md:flex-row items-center justify-between gap-8 group hover:border-emerald-300 transition-all duration-500">
+                        <div class="flex items-center gap-6">
+                            <div class="w-20 h-20 bg-emerald-50 rounded-[1.5rem] flex items-center justify-center text-emerald-900 shadow-sm group-hover:bg-emerald-900 group-hover:text-white transition duration-500">
+                                <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-bold font-outfit text-emerald-950">Shared Memories</h3>
+                                <p class="text-emerald-700/60">Upload and view photos from our years together.</p>
+                                <span class="inline-block mt-2 text-[10px] font-bold bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full uppercase tracking-widest border border-emerald-100">
+                                    {{ \App\Models\Gallery::count() }} Photos Shared
+                                </span>
+                            </div>
+                        </div>
+                        <a href="{{ route('gallery.index') }}" class="px-10 py-4 bg-emerald-900 text-white font-bold rounded-2xl shadow-xl hover:bg-emerald-950 transition transform hover:-translate-y-1">
+                            Upload Pictures
+                        </a>
+                    </div>
+
                     <!-- Additional Payment Section -->
                     <div class="bg-white rounded-[2.5rem] p-10 border border-emerald-100 shadow-xl shadow-emerald-900/5" x-data="{ showForm: false }">
                         <div class="flex flex-col md:flex-row justify-between items-center gap-6">
