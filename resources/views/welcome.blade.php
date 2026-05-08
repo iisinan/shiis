@@ -171,7 +171,7 @@
             </div>
             
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
-                @foreach($images->take(5) as $index => $img)
+                @forelse($images->take(5) as $index => $img)
                     <div class="group relative overflow-hidden rounded-[2.5rem] aspect-square bg-emerald-50 shadow-lg border border-emerald-100 cursor-pointer"
                          @click="currentIdx = {{ $index }}; showSlideshow = true">
                         <img src="{{ Storage::url($img->image_path) }}" alt="{{ $img->title }}" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
@@ -179,7 +179,13 @@
                             <p class="text-white text-sm font-bold tracking-wide">{{ $img->title }}</p>
                         </div>
                     </div>
-                @endforeach
+                @empty
+                    <div class="col-span-full py-20 text-center bg-emerald-50/50 rounded-[3rem] border border-dashed border-emerald-100">
+                        <svg class="w-16 h-16 text-emerald-200 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        <p class="text-emerald-800/40 font-bold text-lg uppercase tracking-widest">Awaiting the first memory.</p>
+                        <p class="text-emerald-600/50 text-sm mt-2">Log in to your dashboard to upload photos.</p>
+                    </div>
+                @endforelse
 
                 @if($images->count() > 5)
                     <div class="group relative overflow-hidden rounded-[2.5rem] aspect-square bg-emerald-900 shadow-2xl flex flex-col items-center justify-center text-center p-8 cursor-pointer transform hover:-translate-y-2 transition duration-500"
