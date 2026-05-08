@@ -123,22 +123,58 @@
                     </div>
 
                     <!-- Shared Memories Card -->
-                    <div class="bg-white rounded-[2.5rem] p-10 border border-emerald-100 shadow-xl shadow-emerald-900/5 flex flex-col md:flex-row items-center justify-between gap-8 group hover:border-emerald-300 transition-all duration-500">
-                        <div class="flex items-center gap-6">
-                            <div class="w-20 h-20 bg-emerald-50 rounded-[1.5rem] flex items-center justify-center text-emerald-900 shadow-sm group-hover:bg-emerald-900 group-hover:text-white transition duration-500">
-                                <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    <div class="bg-white rounded-[2.5rem] p-10 border border-emerald-100 shadow-xl shadow-emerald-900/5 group hover:border-emerald-300 transition-all duration-500" x-data="{ showGalleryUpload: false }">
+                        <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+                            <div class="flex items-center gap-6">
+                                <div class="w-20 h-20 bg-emerald-50 rounded-[1.5rem] flex items-center justify-center text-emerald-900 shadow-sm group-hover:bg-emerald-900 group-hover:text-white transition duration-500">
+                                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                </div>
+                                <div>
+                                    <h3 class="text-2xl font-bold font-outfit text-emerald-950">Shared Memories</h3>
+                                    <p class="text-emerald-700/60">Upload and view photos from our years together.</p>
+                                    <div class="flex gap-2 mt-2">
+                                        <a href="{{ route('gallery.index') }}" class="text-[10px] font-bold bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full uppercase tracking-widest border border-emerald-100 hover:bg-emerald-100 transition">
+                                            View {{ \App\Models\Gallery::count() }} Photos
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
-                            <div>
-                                <h3 class="text-2xl font-bold font-outfit text-emerald-950">Shared Memories</h3>
-                                <p class="text-emerald-700/60">Upload and view photos from our years together.</p>
-                                <span class="inline-block mt-2 text-[10px] font-bold bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full uppercase tracking-widest border border-emerald-100">
-                                    {{ \App\Models\Gallery::count() }} Photos Shared
-                                </span>
-                            </div>
+                            <button @click="showGalleryUpload = !showGalleryUpload" class="px-10 py-4 bg-emerald-900 text-white font-bold rounded-2xl shadow-xl hover:bg-emerald-950 transition transform hover:-translate-y-1">
+                                <span x-text="showGalleryUpload ? 'Cancel Upload' : 'Upload Pictures'"></span>
+                            </button>
                         </div>
-                        <a href="{{ route('gallery.index') }}" class="px-10 py-4 bg-emerald-900 text-white font-bold rounded-2xl shadow-xl hover:bg-emerald-950 transition transform hover:-translate-y-1">
-                            Upload Pictures
-                        </a>
+
+                        <!-- Dashboard Inline Upload Form -->
+                        <div x-show="showGalleryUpload" x-transition class="mt-10 pt-10 border-t border-emerald-50">
+                            @if ($errors->any())
+                                <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-xl mb-6">
+                                    <h3 class="text-sm font-bold text-red-800">Upload Failed</h3>
+                                    <div class="mt-2 text-xs text-red-700 space-y-1">
+                                        @foreach ($errors->all() as $error)
+                                            <p>{{ $error }}</p>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endif
+                            <form action="{{ route('gallery.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+                                @csrf
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <x-input-label for="title" :value="__('Memory Title')" class="text-emerald-900 font-bold" />
+                                        <x-text-input id="title" name="title" type="text" class="mt-1 block w-full border-emerald-100 focus:ring-emerald-500 rounded-xl" required placeholder="e.g. Graduation Day 2005" />
+                                    </div>
+                                    <div>
+                                        <x-input-label for="images" :value="__('Select Photos (Max 10)')" class="text-emerald-900 font-bold" />
+                                        <input type="file" name="images[]" id="images" multiple class="mt-1 block w-full text-sm text-emerald-900 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 cursor-pointer" required accept="image/*">
+                                    </div>
+                                </div>
+                                <div class="flex justify-end">
+                                    <x-primary-button class="bg-emerald-900 hover:bg-emerald-950 px-10 py-3 rounded-xl">
+                                        Submit to Gallery
+                                    </x-primary-button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
 
                     <!-- Additional Payment Section -->
