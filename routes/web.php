@@ -20,13 +20,13 @@ Route::get('/agenda', [HomeController::class, 'agenda'])->name('agenda');
 
 Route::get('/gallery', [HomeController::class, 'gallery'])->name('gallery');
 
-// Fail-proof image server (Supports Local and R2)
-Route::get('/gallery/image/{filename}', function ($filename) {
-    $path = "gallery/{$filename}";
+// Fail-proof storage proxy (Supports Gallery and Receipts on Local and R2)
+Route::get('/storage-proxy/{folder}/{filename}', function ($folder, $filename) {
+    $path = "{$folder}/{$filename}";
     $disk = \Illuminate\Support\Facades\Storage::disk(config('filesystems.default'));
     
     if (!$disk->exists($path)) {
-        \Illuminate\Support\Facades\Log::error("Image not found on disk (" . config('filesystems.default') . "): {$path}");
+        \Illuminate\Support\Facades\Log::error("File not found on disk (" . config('filesystems.default') . "): {$path}");
         abort(404);
     }
 
@@ -34,7 +34,7 @@ Route::get('/gallery/image/{filename}', function ($filename) {
     $type = $disk->mimeType($path);
 
     return response($file)->header('Content-Type', $type);
-})->name('gallery.image');
+})->name('storage.proxy');
 
 // Temporary diagnostic route - will be removed after gallery is fixed
 Route::get('/gallery-debug', function () {

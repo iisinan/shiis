@@ -163,19 +163,19 @@
             @php
                 $galleryImages = $images->values();
                 $allImagesJson = $galleryImages->map(fn($img) => [
-                    'url' => route('gallery.image', ['filename' => basename($img->image_path)]),
+                    'url' => route('storage.proxy', ['folder' => 'gallery', 'filename' => basename($img->image_path)]),
                     'title' => $img->title
                 ])->toJson(JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT);
-            @endphp
+@endphp
 
-            <div x-data="gallerySlideshow(@js($galleryImages->map(fn($img) => ['url' => route('gallery.image', ['filename' => basename($img->image_path)]), 'title' => $img->title])->values()))">
+            <div x-data="gallerySlideshow(@js($galleryImages->map(fn($img) => ['url' => route('storage.proxy', ['folder' => 'gallery', 'filename' => basename($img->image_path)]), 'title' => $img->title])->values()))">
 
                 <!-- Grid: Latest 3 + View All card -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     @forelse($galleryImages->take(3) as $i => $img)
                         <div class="group relative overflow-hidden rounded-[2.5rem] aspect-square bg-emerald-50 shadow-lg border border-emerald-100 cursor-pointer"
                              @click="open({{ $i }})">
-                            <img src="{{ route('gallery.image', ['filename' => basename($img->image_path)]) }}"
+                            <img src="{{ route('storage.proxy', ['folder' => 'gallery', 'filename' => basename($img->image_path)]) }}"
                                  alt="{{ $img->title }}"
                                  class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
                             <div class="absolute inset-0 bg-emerald-950/40 opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-8">
