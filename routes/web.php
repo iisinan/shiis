@@ -128,6 +128,7 @@ Route::middleware(['auth', 'role:Super Admin|Election Admin|Finance Admin'])->gr
     Route::post('/admin/nominations/toggle', [AdminController::class, 'toggleNominations'])->name('admin.nominations.toggle');
     Route::post('/admin/nominations/{nomination}/approve', [AdminController::class, 'approveNomination'])->name('admin.nominations.approve');
     
+    Route::post('/admin/elections/initialize', [AdminController::class, 'initializeElection'])->name('admin.elections.initialize');
     Route::post('/admin/elections/{election}/toggle', [AdminController::class, 'toggleElection'])->name('admin.elections.toggle');
 
     Route::get('/admin/logs', [AdminController::class, 'activityLogs'])->name('admin.logs');

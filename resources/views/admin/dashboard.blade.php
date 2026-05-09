@@ -183,6 +183,13 @@
                                             Open Election
                                         </button>
                                     </form>
+                                @else
+                                    <form action="{{ route('admin.elections.initialize') }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="block w-full py-3 bg-emerald-50 text-emerald-600 text-center text-xs font-bold rounded-xl border border-emerald-100 hover:bg-emerald-600 hover:text-white transition" onclick="return confirm('Are you sure you want to INITIALIZE and OPEN a new election?')">
+                                            Initialize New Election
+                                        </button>
+                                    </form>
                                 @endif
                             @endif
 

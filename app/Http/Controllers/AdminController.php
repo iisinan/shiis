@@ -89,6 +89,24 @@ class AdminController extends Controller
         return back()->with('success', 'Nomination approved and member is now a candidate.');
     }
 
+    public function initializeElection()
+    {
+        // Don't initialize if one already exists
+        if (\App\Models\Election::where('is_active', true)->exists()) {
+            return back()->with('error', 'An active election already exists.');
+        }
+
+        $election = \App\Models\Election::create([
+            'title' => 'SHIIS \'05 Executive Election',
+            'start_date' => now(),
+            'end_date' => now()->addDays(2),
+            'is_active' => true,
+        ]);
+
+        \App\Services\AuditLogger::log('Election Opened', "Election '{$election->title}' was initialized and opened.");
+        return back()->with('success', 'New election created and opened successfully.');
+    }
+
     public function toggleElection(Election $election)
     {
         $newState = !$election->is_active;
