@@ -23,13 +23,15 @@ Route::get('/gallery', [HomeController::class, 'gallery'])->name('gallery');
 // Fail-proof storage proxy (Supports Gallery and Receipts on Local and R2)
 Route::get('/storage-proxy/{folder}/{filename}', function ($folder, $filename) {
     $path = "{$folder}/{$filename}";
-    $disk = \Illuminate\Support\Facades\Storage::disk(config('filesystems.default'));
+    $diskName = config('filesystems.default');
+    $disk = \Illuminate\Support\Facades\Storage::disk($diskName);
     
     if (!$disk->exists($path)) {
-        \Illuminate\Support\Facades\Log::error("File not found on disk (" . config('filesystems.default') . "): {$path}");
-        abort(404);
+        \Illuminate\Support\Facades\Log::error("File NOT found. Disk: {$diskName}, Path: {$path}");
+        abort(404, "File not found on {$diskName} storage.");
     }
 
+    \Illuminate\Support\Facades\Log::info("Serving file. Disk: {$diskName}, Path: {$path}");
     $file = $disk->get($path);
     $type = $disk->mimeType($path);
 
