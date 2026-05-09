@@ -218,17 +218,32 @@
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
                                 </button>
                                 
-                                <div x-show="showReset" x-transition class="mt-4 p-4 border border-red-200 rounded-xl bg-white shadow-inner">
-                                    <h5 class="text-xs font-bold text-red-800 mb-2">Nuclear Reset</h5>
-                                    <p class="text-[10px] text-red-600/80 mb-4 leading-relaxed">This will permanently delete all members, payments, votes, and images. The system will be entirely fresh. Type <strong>RESET-ALL</strong> to confirm.</p>
-                                    
-                                    <form action="{{ route('admin.system.reset') }}" method="POST" class="space-y-3">
-                                        @csrf
-                                        <input type="text" name="keyword" required placeholder="Type RESET-ALL" class="w-full text-xs py-2 px-3 border-red-200 rounded-lg focus:ring-red-500 focus:border-red-500 text-red-900 font-bold placeholder-red-300">
-                                        <button type="submit" class="w-full py-2 bg-red-600 hover:bg-red-700 text-white text-[10px] font-bold rounded-lg uppercase tracking-widest transition shadow-lg" onclick="return confirm('FINAL WARNING: This is irreversible. Are you sure you want to wipe the entire database and start fresh?')">
-                                            Wipe System
-                                        </button>
-                                    </form>
+                                <div x-show="showReset" x-transition class="mt-4 p-4 border border-red-200 rounded-xl bg-white shadow-inner space-y-8">
+                                    <div>
+                                        <h5 class="text-xs font-bold text-red-800 mb-2">Financial Reset</h5>
+                                        <p class="text-[10px] text-red-600/80 mb-4 leading-relaxed">This will set the amount of ALL verified payments to ₦0. It does NOT delete members or votes. Type <strong>RESET-FINANCIALS</strong> to confirm.</p>
+                                        
+                                        <form action="{{ route('admin.financials.reset') }}" method="POST" class="space-y-3">
+                                            @csrf
+                                            <input type="text" name="keyword" required placeholder="Type RESET-FINANCIALS" class="w-full text-xs py-2 px-3 border-red-200 rounded-lg focus:ring-red-500 focus:border-red-500 text-red-900 font-bold placeholder-red-300">
+                                            <button type="submit" class="w-full py-2 bg-amber-600 hover:bg-amber-700 text-white text-[10px] font-bold rounded-lg uppercase tracking-widest transition shadow-lg" onclick="return confirm('Are you sure you want to zero out all verified payment amounts?')">
+                                                Reset Verified Amounts
+                                            </button>
+                                        </form>
+                                    </div>
+
+                                    <div class="pt-4 border-t border-red-100">
+                                        <h5 class="text-xs font-bold text-red-800 mb-2">Nuclear Reset</h5>
+                                        <p class="text-[10px] text-red-600/80 mb-4 leading-relaxed">This will permanently delete all members, payments, votes, and images. The system will be entirely fresh. Type <strong>RESET-ALL</strong> to confirm.</p>
+                                        
+                                        <form action="{{ route('admin.system.reset') }}" method="POST" class="space-y-3">
+                                            @csrf
+                                            <input type="text" name="keyword" required placeholder="Type RESET-ALL" class="w-full text-xs py-2 px-3 border-red-200 rounded-lg focus:ring-red-500 focus:border-red-500 text-red-900 font-bold placeholder-red-300">
+                                            <button type="submit" class="w-full py-2 bg-red-600 hover:bg-red-700 text-white text-[10px] font-bold rounded-lg uppercase tracking-widest transition shadow-lg" onclick="return confirm('FINAL WARNING: This is irreversible. Are you sure you want to wipe the entire database and start fresh?')">
+                                                Wipe System
+                                            </button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>

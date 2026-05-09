@@ -211,6 +211,19 @@ class AdminController extends Controller
         return redirect()->route('login')->with('success', 'Nuclear Reset Complete. The system is completely fresh. Please log in with the default admin credentials.');
     }
 
+    public function resetFinancials(Request $request)
+    {
+        if ($request->keyword !== 'RESET-FINANCIALS') {
+            return back()->with('error', 'Invalid confirmation keyword. Financial reset aborted.');
+        }
+
+        \App\Models\Payment::where('status', 'success')->update(['amount' => 0]);
+
+        AuditLogger::log('Financial Reset', "Admin reset all verified payment amounts to zero.");
+
+        return back()->with('success', 'Financial amounts have been reset to zero successfully.');
+    }
+
     public function activityLogs()
     {
         $logs = \App\Models\AuditLog::with('user')->latest()->paginate(50);
