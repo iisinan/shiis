@@ -85,4 +85,16 @@ class AccountantController extends Controller
 
         return response()->stream($callback, 200, $headers);
     }
+
+    public function exportVerifiedPaymentsPdf()
+    {
+        $payments = Payment::with('user')->where('status', 'success')->latest()->get();
+        $totalAmount = $payments->sum('amount');
+        
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('accountant.pdf.payments', compact('payments', 'totalAmount'));
+        
+        AuditLogger::log('Financial Export', "Accountant exported verified payments report in PDF format.");
+
+        return $pdf->download('verified_payments_' . date('Y-m-d_H-i') . '.pdf');
+    }
 }

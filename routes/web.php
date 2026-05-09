@@ -187,6 +187,7 @@ Route::middleware(['auth', 'role:Super Admin|Election Admin|Finance Admin'])->gr
 Route::middleware(['auth', 'role:Accountant|Super Admin'])->group(function () {
     Route::get('/accountant/dashboard', [AccountantController::class, 'dashboard'])->name('accountant.dashboard');
     Route::get('/accountant/export', [AccountantController::class, 'exportVerifiedPayments'])->name('accountant.export');
+    Route::get('/accountant/export/pdf', [AccountantController::class, 'exportVerifiedPaymentsPdf'])->name('accountant.export.pdf');
     Route::post('/accountant/verify/{payment}', [AccountantController::class, 'verifyPayment'])->name('accountant.verify');
 });
 

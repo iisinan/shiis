@@ -25,6 +25,18 @@
                     <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-300">Administrative Workspace</span>
                     <h1 class="text-4xl font-black font-outfit mt-2">Payment Approvals</h1>
                     <p class="text-emerald-100/60 mt-2 max-w-md">Review and verify member contributions to unlock access to the fraternity portal.</p>
+                    
+                    <!-- Export Actions -->
+                    <div class="mt-6 flex flex-wrap gap-3">
+                        <a href="{{ route('accountant.export') }}" class="inline-flex items-center gap-2 px-4 py-2.5 bg-emerald-800 hover:bg-emerald-700 text-white text-[10px] font-black uppercase tracking-widest rounded-xl transition border border-white/10">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                            Export CSV
+                        </a>
+                        <a href="{{ route('accountant.export.pdf') }}" class="inline-flex items-center gap-2 px-4 py-2.5 bg-white text-emerald-900 hover:bg-emerald-50 text-[10px] font-black uppercase tracking-widest rounded-xl transition shadow-xl">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                            Download PDF
+                        </a>
+                    </div>
                 </div>
                 <div class="flex items-center gap-8">
                     <div class="text-center">
