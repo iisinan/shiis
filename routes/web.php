@@ -33,12 +33,27 @@ Route::get('/gallery/image/{filename}', function ($filename) {
 Route::get('/gallery-debug', function () {
     $total = \App\Models\Gallery::count();
     $images = \App\Models\Gallery::latest()->take(5)->get(['id', 'title', 'image_path', 'is_published', 'user_id', 'created_at']);
+
+    $fileChecks = $images->map(function($img) {
+        $path = $img->image_path;
+        $publicExists = \Illuminate\Support\Facades\Storage::disk('public')->exists($path);
+        $localExists  = \Illuminate\Support\Facades\Storage::disk('local')->exists($path);
+        return [
+            'id'           => $img->id,
+            'image_path'   => $path,
+            'basename'     => basename($path),
+            'public_disk_file_exists' => $publicExists,
+            'local_disk_file_exists'  => $localExists,
+            'proxy_url'    => route('gallery.image', ['filename' => basename($path)]),
+        ];
+    });
+
     return response()->json([
-        'total_in_db' => $total,
-        'latest_5'    => $images,
+        'total_in_db'         => $total,
         'storage_link_exists' => file_exists(public_path('storage')),
-        'filesystem_disk' => config('filesystems.default'),
-    ]);
+        'filesystem_disk'     => config('filesystems.default'),
+        'files'               => $fileChecks,
+    ], 200, [], JSON_PRETTY_PRINT);
 });
 
 Route::middleware(['auth'])->group(function () {
