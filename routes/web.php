@@ -20,17 +20,18 @@ Route::get('/agenda', [HomeController::class, 'agenda'])->name('agenda');
 
 Route::get('/gallery', [HomeController::class, 'gallery'])->name('gallery');
 
-// Fail-proof image server
+// Fail-proof image server (Supports Local and R2)
 Route::get('/gallery/image/{filename}', function ($filename) {
     $path = "gallery/{$filename}";
+    $disk = \Illuminate\Support\Facades\Storage::disk(config('filesystems.default'));
     
-    if (!\Illuminate\Support\Facades\Storage::disk('public')->exists($path)) {
-        \Illuminate\Support\Facades\Log::error("Image not found on public disk: {$path}");
+    if (!$disk->exists($path)) {
+        \Illuminate\Support\Facades\Log::error("Image not found on disk (" . config('filesystems.default') . "): {$path}");
         abort(404);
     }
 
-    $file = \Illuminate\Support\Facades\Storage::disk('public')->get($path);
-    $type = \Illuminate\Support\Facades\Storage::disk('public')->mimeType($path);
+    $file = $disk->get($path);
+    $type = $disk->mimeType($path);
 
     return response($file)->header('Content-Type', $type);
 })->name('gallery.image');
