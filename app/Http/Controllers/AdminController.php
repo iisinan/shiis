@@ -19,6 +19,20 @@ class AdminController extends Controller
         return view('admin.members.index', compact('members'));
     }
 
+    public function destroyMember(User $user)
+    {
+        if ($user->hasRole('Super Admin')) {
+            return back()->with('error', 'Cannot delete a Super Admin.');
+        }
+
+        $name = $user->name;
+        $user->delete();
+
+        AuditLogger::log('Member Deletion', "Admin deleted member: {$name}");
+
+        return back()->with('success', "Member {$name} deleted successfully.");
+    }
+
     public function verifyPayment(Request $request, User $user)
     {
         $user->update([
@@ -105,6 +119,17 @@ class AdminController extends Controller
 
         \App\Services\AuditLogger::log('Election Opened', "Election '{$election->title}' was opened.");
         return back()->with('success', 'Election opened successfully.');
+    }
+
+    public function toggleNominations()
+    {
+        $currentState = \Illuminate\Support\Facades\Cache::get('nominations_active', false);
+        \Illuminate\Support\Facades\Cache::forever('nominations_active', !$currentState);
+        
+        $status = !$currentState ? 'opened' : 'closed';
+        AuditLogger::log('Nomination Status', "Admin {$status} nominations globally.");
+
+        return back()->with('success', "Nominations are now {$status}.");
     }
 
     public function activityLogs()

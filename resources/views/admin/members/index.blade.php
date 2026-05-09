@@ -64,18 +64,30 @@
                                             @endif
                                         </td>
                                         <td class="py-6 px-4 text-right">
-                                            @if(!$member->is_paid)
-                                                <form action="{{ route('admin.members.verify', $member) }}" method="POST">
+                                            <div class="flex items-center justify-end gap-2">
+                                                @if(!$member->is_paid)
+                                                    <form action="{{ route('admin.members.verify', $member) }}" method="POST">
+                                                        @csrf
+                                                        <button type="submit" class="px-5 py-2 bg-emerald-900 hover:bg-emerald-950 text-white text-[10px] font-bold rounded-xl transition shadow-lg" onclick="return confirm('Verify contribution for {{ $member->name }}?')">
+                                                            Activate
+                                                        </button>
+                                                    </form>
+                                                @else
+                                                    <span class="text-emerald-200">
+                                                        <svg class="w-6 h-6 ml-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                                    </span>
+                                                @endif
+
+                                                @unless($member->hasRole('Super Admin'))
+                                                <form action="{{ route('admin.members.destroy', $member) }}" method="POST">
                                                     @csrf
-                                                    <button type="submit" class="px-5 py-2 bg-emerald-900 hover:bg-emerald-950 text-white text-[10px] font-bold rounded-xl transition shadow-lg" onclick="return confirm('Verify contribution for {{ $member->name }}?')">
-                                                        Activate Account
+                                                    @method('DELETE')
+                                                    <button type="submit" class="px-3 py-2 bg-red-50 text-red-600 hover:bg-red-100 text-[10px] font-bold rounded-xl transition border border-red-100" onclick="return confirm('Are you sure you want to completely delete {{ $member->name }}? This action cannot be undone.')">
+                                                        Delete
                                                     </button>
                                                 </form>
-                                            @else
-                                                <span class="text-emerald-200">
-                                                    <svg class="w-6 h-6 ml-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                                                </span>
-                                            @endif
+                                                @endunless
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach

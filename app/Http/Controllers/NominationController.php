@@ -12,14 +12,13 @@ class NominationController extends Controller
 {
     public function index()
     {
-        $eventDate = \Carbon\Carbon::parse('2026-05-31');
-        $nominationDate = $eventDate->copy()->subDay()->startOfDay();
+        $isActive = \Illuminate\Support\Facades\Cache::get('nominations_active', false);
 
-        if (now()->lt($nominationDate)) {
+        if (!$isActive) {
             return view('nominations.coming-soon', [
-                'activeDate' => $nominationDate->format('F jS, Y'),
-                'rawDate' => $nominationDate->format('Y-m-d H:i:s'),
-                'daysToWait' => now()->diffInDays($nominationDate)
+                'activeDate' => 'To Be Announced by Admin',
+                'rawDate' => null,
+                'daysToWait' => null
             ]);
         }
 

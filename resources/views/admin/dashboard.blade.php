@@ -168,11 +168,42 @@
                             @if($activeElection)
                                 <form action="{{ route('admin.elections.toggle', $activeElection) }}" method="POST">
                                     @csrf
-                                    <button type="submit" class="block w-full py-3 bg-red-50 text-red-600 text-center text-xs font-bold rounded-xl border border-red-100 hover:bg-red-600 hover:text-white transition">
-                                        Close Election
+                                    <button type="submit" class="block w-full py-3 bg-red-50 text-red-600 text-center text-xs font-bold rounded-xl border border-red-100 hover:bg-red-600 hover:text-white transition" onclick="return confirm('Are you sure you want to CLOSE the election and broadcast results? This cannot be undone easily.')">
+                                        Close Election & Broadcast Results
                                     </button>
                                 </form>
+                            @else
+                                @php
+                                    $inactiveElection = \App\Models\Election::where('is_active', false)->latest()->first();
+                                @endphp
+                                @if($inactiveElection)
+                                    <form action="{{ route('admin.elections.toggle', $inactiveElection) }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="block w-full py-3 bg-emerald-50 text-emerald-600 text-center text-xs font-bold rounded-xl border border-emerald-100 hover:bg-emerald-600 hover:text-white transition" onclick="return confirm('Are you sure you want to OPEN the election for voting?')">
+                                            Open Election
+                                        </button>
+                                    </form>
+                                @endif
                             @endif
+
+                            <div class="mt-8 pt-8 border-t border-emerald-100">
+                                <h4 class="text-xs font-black text-emerald-900 uppercase tracking-widest mb-4">Nomination Controls</h4>
+                                @php
+                                    $nomsActive = \Illuminate\Support\Facades\Cache::get('nominations_active', false);
+                                @endphp
+                                <form action="{{ route('admin.nominations.toggle') }}" method="POST">
+                                    @csrf
+                                    @if($nomsActive)
+                                        <button type="submit" class="block w-full py-3 bg-amber-50 text-amber-600 text-center text-xs font-bold rounded-xl border border-amber-100 hover:bg-amber-600 hover:text-white transition" onclick="return confirm('Are you sure you want to deactivate nominations?')">
+                                            Deactivate Nominations
+                                        </button>
+                                    @else
+                                        <button type="submit" class="block w-full py-3 bg-emerald-50 text-emerald-600 text-center text-xs font-bold rounded-xl border border-emerald-100 hover:bg-emerald-600 hover:text-white transition" onclick="return confirm('Are you sure you want to activate nominations?')">
+                                            Activate Nominations
+                                        </button>
+                                    @endif
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
