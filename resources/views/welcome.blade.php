@@ -158,7 +158,7 @@
         currentIdx: 0,
         images: [
             @foreach($images as $img)
-                { url: '{{ Storage::url($img->image_path) }}', title: '{{ $img->title }}' },
+                { url: '{{ asset('storage/' . $img->image_path) }}', title: '{{ $img->title }}' },
             @endforeach
         ],
         next() { this.currentIdx = (this.currentIdx + 1) % this.images.length },
@@ -174,7 +174,7 @@
                 @forelse($images->take(5) as $index => $img)
                     <div class="group relative overflow-hidden rounded-[2.5rem] aspect-square bg-emerald-50 shadow-lg border border-emerald-100 cursor-pointer"
                          @click="currentIdx = {{ $index }}; showSlideshow = true">
-                        <img src="{{ Storage::url($img->image_path) }}" alt="{{ $img->title }}" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
+                        <img src="{{ asset('storage/' . $img->image_path) }}" alt="{{ $img->title }}" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
                         <div class="absolute inset-0 bg-emerald-950/40 opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-8">
                             <p class="text-white text-sm font-bold tracking-wide">{{ $img->title }}</p>
                         </div>
