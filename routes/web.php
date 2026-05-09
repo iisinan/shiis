@@ -23,10 +23,16 @@ Route::get('/gallery', [HomeController::class, 'gallery'])->name('gallery');
 // Fail-proof image server
 Route::get('/gallery/image/{filename}', function ($filename) {
     $path = "gallery/{$filename}";
+    
     if (!\Illuminate\Support\Facades\Storage::disk('public')->exists($path)) {
+        \Illuminate\Support\Facades\Log::error("Image not found on public disk: {$path}");
         abort(404);
     }
-    return \Illuminate\Support\Facades\Storage::disk('public')->response($path);
+
+    $file = \Illuminate\Support\Facades\Storage::disk('public')->get($path);
+    $type = \Illuminate\Support\Facades\Storage::disk('public')->mimeType($path);
+
+    return response($file)->header('Content-Type', $type);
 })->name('gallery.image');
 
 // Temporary diagnostic route - will be removed after gallery is fixed

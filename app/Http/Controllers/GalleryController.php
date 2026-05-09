@@ -30,8 +30,8 @@ class GalleryController extends Controller
 
         foreach ($request->file('images', []) as $image) {
             try {
-                // Store on the public disk so it is accessible via the web
-                $path = $image->store('gallery', 'public');
+                // Store on the default disk (local, public, or s3/R2)
+                $path = $image->store('gallery');
 
                 if (!$path) {
                     $errors[] = "Failed to store image: " . $image->getClientOriginalName();
@@ -71,7 +71,7 @@ class GalleryController extends Controller
             abort(403);
         }
 
-        Storage::disk('public')->delete($gallery->image_path);
+        Storage::disk(config('filesystems.default'))->delete($gallery->image_path);
         $title = $gallery->title;
         $gallery->delete();
 

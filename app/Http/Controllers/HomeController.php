@@ -17,10 +17,14 @@ class HomeController extends Controller
             try {
                 \Illuminate\Support\Facades\Artisan::call('storage:link');
             } catch (\Exception $e) {
-                // Fail silently if permissions prevent link creation
+                // Fail silently
             }
         }
-        $images = Gallery::where('is_published', true)->latest()->get();
+        
+        $images = Gallery::latest()->get()->filter(function($img) {
+            return \Illuminate\Support\Facades\Storage::disk(config('filesystems.default'))->exists($img->image_path);
+        });
+
         return view('welcome', compact('images'));
     }
 
