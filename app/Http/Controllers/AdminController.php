@@ -33,6 +33,21 @@ class AdminController extends Controller
         return back()->with('success', "Member {$name} deleted successfully.");
     }
 
+    public function resetPassword(Request $request, User $user)
+    {
+        $request->validate([
+            'password' => 'required|string|min:8',
+        ]);
+
+        $user->update([
+            'password' => \Illuminate\Support\Facades\Hash::make($request->password),
+        ]);
+
+        AuditLogger::log('Password Reset', "Admin reset password for {$user->name}");
+
+        return back()->with('success', "Password for {$user->name} has been reset successfully.");
+    }
+
     public function verifyPayment(Request $request, User $user)
     {
         $user->update([

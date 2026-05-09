@@ -123,6 +123,7 @@ Route::middleware(['auth', 'role:Super Admin|Election Admin|Finance Admin'])->gr
     Route::get('/admin/members', [AdminController::class, 'members'])->name('admin.members');
     Route::post('/admin/members/{user}/verify', [AdminController::class, 'verifyPayment'])->name('admin.members.verify');
     Route::delete('/admin/members/{user}', [AdminController::class, 'destroyMember'])->name('admin.members.destroy');
+    Route::post('/admin/members/{user}/reset-password', [AdminController::class, 'resetPassword'])->name('admin.members.reset-password');
     
     Route::get('/admin/nominations', [AdminController::class, 'nominations'])->name('admin.nominations');
     Route::post('/admin/nominations/toggle', [AdminController::class, 'toggleNominations'])->name('admin.nominations.toggle');

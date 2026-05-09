@@ -79,6 +79,12 @@
                                                 @endif
 
                                                 @unless($member->hasRole('Super Admin'))
+                                                <button type="button" 
+                                                        class="px-3 py-2 bg-emerald-50 text-emerald-600 hover:bg-emerald-100 text-[10px] font-bold rounded-xl transition border border-emerald-100" 
+                                                        onclick="triggerReset('{{ $member->id }}', '{{ $member->name }}')">
+                                                    Reset PWD
+                                                </button>
+
                                                 <form action="{{ route('admin.members.destroy', $member) }}" method="POST">
                                                     @csrf
                                                     @method('DELETE')
@@ -101,6 +107,26 @@
                 </div>
             </div>
         </div>
+
+        <!-- Hidden Reset Form -->
+        <form id="reset-password-form" method="POST" style="display: none;">
+            @csrf
+            <input type="hidden" name="password" id="reset-password-value">
+        </form>
+
+        <script>
+            function triggerReset(userId, userName) {
+                const newPassword = prompt(`Enter a new password for ${userName} (min 8 characters):`, 'password123');
+                if (newPassword && newPassword.length >= 8) {
+                    const form = document.getElementById('reset-password-form');
+                    form.action = `/admin/members/${userId}/reset-password`;
+                    document.getElementById('reset-password-value').value = newPassword;
+                    form.submit();
+                } else if (newPassword) {
+                    alert('Password must be at least 8 characters long.');
+                }
+            }
+        </script>
 
         <!-- Receipt Preview Modal -->
         <div x-show="showReceipt" 
