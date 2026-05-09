@@ -12,22 +12,23 @@ class ElectionController extends Controller
 {
     public function index()
     {
-        $eventDate = \Carbon\Carbon::parse('2026-05-31')->startOfDay();
-
-        if (now()->lt($eventDate)) {
-            return view('elections.coming-soon', [
-                'activeDate' => $eventDate->format('F jS, Y'),
-                'rawDate' => $eventDate->format('Y-m-d H:i:s'),
-                'daysToWait' => now()->diffInDays($eventDate)
-            ]);
-        }
-
         $election = Election::where('is_active', true)
             ->where('start_date', '<=', now())
             ->where('end_date', '>=', now())
             ->first();
 
+        // If no active election, show coming soon or no-active
         if (!$election) {
+            $eventDate = \Carbon\Carbon::parse('2026-05-31')->startOfDay();
+
+            if (now()->lt($eventDate)) {
+                return view('elections.coming-soon', [
+                    'activeDate' => 'Subject to Admin Activation',
+                    'rawDate' => $eventDate->format('Y-m-d H:i:s'),
+                    'daysToWait' => max(0, now()->diffInDays($eventDate, false))
+                ]);
+            }
+            
             return view('elections.no-active');
         }
 
