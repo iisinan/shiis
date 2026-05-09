@@ -24,7 +24,7 @@
                             </div>
                             <div class="w-full">
                                 <h3 class="text-lg font-bold font-outfit mb-1">Step 1: Make Your Contribution</h3>
-                                <p class="text-emerald-200/80 text-xs sm:text-sm leading-relaxed mb-4">Please make a fixed contribution of ₦5,000 to the official reunion account below before filling out this form.</p>
+                                <p class="text-emerald-200/80 text-xs sm:text-sm leading-relaxed mb-4">Please make a minimum contribution of ₦5,000 to the official reunion account below before filling out this form.</p>
                                 
                                 <div class="bg-black/20 rounded-2xl p-4 sm:p-5 border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                                     <div class="text-center sm:text-left">
@@ -92,11 +92,11 @@
                                 <!-- Contribution Amount & Receipt Row -->
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 items-start">
                                     <div class="space-y-2">
-                                        <label for="amount" class="text-xs font-bold text-emerald-900 uppercase tracking-wider ml-1">Fixed Contribution (₦)</label>
-                                        <input id="amount" type="number" name="amount" value="5000" readonly 
-                                            class="block w-full bg-emerald-100/50 border border-emerald-200 rounded-xl px-4 py-3 text-emerald-950 font-black cursor-not-allowed shadow-inner"
-                                            title="Contribution amount is fixed at ₦5,000">
-                                        <p class="text-[10px] text-emerald-600 font-bold uppercase tracking-widest ml-1">Amount is fixed at ₦5,000</p>
+                                        <label for="amount" class="text-xs font-bold text-emerald-900 uppercase tracking-wider ml-1">Contribution Amount (₦)</label>
+                                        <input id="amount" type="number" name="amount" value="5000" min="5000" required 
+                                            class="block w-full bg-emerald-50/50 border border-emerald-100 focus:border-emerald-500 focus:ring-emerald-500 rounded-xl px-4 py-3 text-emerald-950 font-black transition-colors"
+                                            placeholder="Min. 5000">
+                                        <p class="text-[10px] text-emerald-600 font-bold uppercase tracking-widest ml-1">Minimum contribution is ₦5,000</p>
                                     </div>
 
                                     <div x-data="{ fileName: '' }" class="space-y-2">
