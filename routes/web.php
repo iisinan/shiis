@@ -40,16 +40,16 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/elections', [ElectionController::class, 'index'])->name('elections.index');
         Route::post('/elections/{election}/vote', [ElectionController::class, 'vote'])->name('elections.vote');
         Route::get('/elections/results', [ElectionController::class, 'results'])->name('elections.results');
-        
-        Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery.index');
-        Route::post('/gallery', [GalleryController::class, 'store'])->name('gallery.store');
-        Route::delete('/gallery/{gallery}', [GalleryController::class, 'destroy'])->name('gallery.destroy');
 
         Route::get('/members', [MemberController::class, 'index'])->name('members.index');
         Route::get('/members/{user}', [MemberController::class, 'show'])->name('members.show');
-        
         Route::get('/members/search', [MemberController::class, 'search'])->name('members.search');
     });
+
+    // Gallery is open to ALL authenticated members (not just paid)
+    Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery.index');
+    Route::post('/gallery', [GalleryController::class, 'store'])->name('gallery.store');
+    Route::delete('/gallery/{gallery}', [GalleryController::class, 'destroy'])->name('gallery.destroy');
 
     Route::post('/payment/additional', [PaymentController::class, 'storeManual'])->name('payment.storeAdditional');
     
