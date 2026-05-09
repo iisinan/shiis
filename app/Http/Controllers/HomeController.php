@@ -42,6 +42,10 @@ class HomeController extends Controller
 
     public function dashboard()
     {
+        if (auth()->user()->hasRole('Accountant')) {
+            return redirect()->route('accountant.dashboard');
+        }
+
         return view('dashboard');
     }
 }

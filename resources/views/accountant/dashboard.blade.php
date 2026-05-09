@@ -19,56 +19,23 @@
 
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
 
-            <!-- Stats Bar -->
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
-
-                <!-- Pending -->
-                <div class="relative bg-amber-50 border border-amber-200 rounded-3xl p-7 overflow-hidden">
-                    <div class="absolute right-5 top-5 w-10 h-10 bg-amber-100 rounded-2xl flex items-center justify-center">
-                        <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                    </div>
-                    <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-amber-600">Pending</p>
-                    <p class="text-4xl font-black font-outfit text-amber-700 mt-1">{{ $totalPendingCount }}</p>
-                    <div class="flex items-center gap-2 mt-3">
-                        <span class="w-2 h-2 bg-amber-500 rounded-full animate-pulse block"></span>
-                        <span class="text-[10px] font-bold text-amber-600 uppercase tracking-widest">Awaiting Review</span>
-                    </div>
+            <!-- Focused Header -->
+            <div class="bg-emerald-900 rounded-[2.5rem] p-10 text-white shadow-2xl shadow-emerald-900/20 flex flex-col md:flex-row justify-between items-center gap-6">
+                <div>
+                    <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-300">Administrative Workspace</span>
+                    <h1 class="text-4xl font-black font-outfit mt-2">Payment Approvals</h1>
+                    <p class="text-emerald-100/60 mt-2 max-w-md">Review and verify member contributions to unlock access to the fraternity portal.</p>
                 </div>
-
-                <!-- Verified Funds -->
-                <div class="relative bg-emerald-900 rounded-3xl p-7 overflow-hidden shadow-xl shadow-emerald-900/20">
-                    <div class="absolute right-5 top-5 w-10 h-10 bg-white/10 rounded-2xl flex items-center justify-center">
-                        <svg class="w-5 h-5 text-emerald-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <div class="flex items-center gap-8">
+                    <div class="text-center">
+                        <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-300">Pending</p>
+                        <p class="text-4xl font-black font-outfit mt-1">{{ $totalPendingCount }}</p>
                     </div>
-                    <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-300">Total Verified</p>
-                    <p class="text-3xl font-black font-outfit text-white mt-1">₦{{ number_format($totalVerifiedAmount, 2) }}</p>
-                    <a href="{{ route('accountant.export') }}"
-                       class="inline-flex items-center gap-2 mt-4 text-[10px] font-bold text-emerald-300 hover:text-white transition uppercase tracking-widest">
-                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                        Export CSV Report
-                    </a>
-                </div>
-
-                <!-- Quick Guide -->
-                <div class="relative bg-white border border-emerald-100 rounded-3xl p-7 shadow-sm">
-                    <div class="absolute right-5 top-5 w-10 h-10 bg-emerald-50 rounded-2xl flex items-center justify-center">
-                        <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    <div class="h-12 w-px bg-white/10 hidden md:block"></div>
+                    <div class="text-center">
+                        <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-300 text-right md:text-left">Verified Funds</p>
+                        <p class="text-3xl font-black font-outfit mt-1">₦{{ number_format($totalVerifiedAmount, 2) }}</p>
                     </div>
-                    <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-600/50">How It Works</p>
-                    <ol class="mt-3 space-y-1.5">
-                        <li class="flex items-start gap-2 text-xs text-emerald-700">
-                            <span class="w-4 h-4 bg-emerald-100 rounded-full text-[9px] font-black flex items-center justify-center shrink-0 mt-0.5">1</span>
-                            View the payment receipt
-                        </li>
-                        <li class="flex items-start gap-2 text-xs text-emerald-700">
-                            <span class="w-4 h-4 bg-emerald-100 rounded-full text-[9px] font-black flex items-center justify-center shrink-0 mt-0.5">2</span>
-                            Confirm the amount matches
-                        </li>
-                        <li class="flex items-start gap-2 text-xs text-emerald-700">
-                            <span class="w-4 h-4 bg-emerald-100 rounded-full text-[9px] font-black flex items-center justify-center shrink-0 mt-0.5">3</span>
-                            Click Approve to unlock member
-                        </li>
-                    </ol>
                 </div>
             </div>
 
