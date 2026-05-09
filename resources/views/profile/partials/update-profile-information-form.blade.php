@@ -95,7 +95,7 @@
                 <div class="relative w-24 h-24">
                     <template x-if="!photoPreview">
                         @if($user->profile_photo)
-                            <img src="{{ asset('storage/' . $user->profile_photo) }}" class="w-full h-full object-cover rounded-2xl border-2 border-emerald-100">
+                            <img src="{{ route('storage.proxy', ['folder' => 'profiles', 'filename' => basename($user->profile_photo)]) }}" class="w-full h-full object-cover rounded-2xl border-2 border-emerald-100">
                         @else
                             <div class="w-full h-full bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-900 text-2xl font-bold border-2 border-dashed border-emerald-100">
                                 {{ substr($user->name, 0, 1) }}

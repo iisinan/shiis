@@ -51,7 +51,7 @@
                 @forelse($images as $img)
                     <div class="bg-white rounded-[2rem] overflow-hidden shadow-xl shadow-emerald-900/5 border border-emerald-50 group relative">
                         <div class="relative h-56 overflow-hidden">
-                            <img src="{{ asset('storage/' . $img->image_path) }}" alt="{{ $img->title }}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                            <img src="{{ route('storage.proxy', ['folder' => 'gallery', 'filename' => basename($img->image_path)]) }}" alt="{{ $img->title }}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
                             <div class="absolute inset-0 bg-emerald-950/20 group-hover:bg-transparent transition duration-500"></div>
                         </div>
                         <div class="p-6">
