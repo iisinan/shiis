@@ -153,84 +153,123 @@
     </section>
 
     <!-- Gallery Section -->
-    <section id="gallery" class="py-24 bg-white" x-data="{ 
-        showSlideshow: false, 
-        currentIdx: 0,
-        images: {!! $images->map(fn($img) => ['url' => route('gallery.image', ['filename' => basename($img->image_path)]), 'title' => $img->title])->toJson() !!},
-        next() { this.currentIdx = (this.currentIdx + 1) % this.images.length },
-        prev() { this.currentIdx = (this.currentIdx - 1 + this.images.length) % this.images.length }
-    }">
+    <section id="gallery" class="py-24 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
                 <h2 class="text-4xl font-bold font-outfit mb-4 text-emerald-950">School Memories</h2>
                 <p class="text-emerald-700/60 max-w-xl mx-auto">A visual journey through the moments that shaped our brotherhood at SHIIS.</p>
             </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                @forelse($images->take(3) as $index => $img)
-                    <div class="group relative overflow-hidden rounded-[2.5rem] aspect-square bg-emerald-50 shadow-lg border border-emerald-100 cursor-pointer"
-                         @click="currentIdx = {{ $index }}; showSlideshow = true">
-                        <img src="{{ route('gallery.image', ['filename' => basename($img->image_path)]) }}" alt="{{ $img->title }}" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
-                        <div class="absolute inset-0 bg-emerald-950/40 opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-8">
-                            <p class="text-white text-sm font-bold tracking-wide">{{ $img->title }}</p>
+
+            @php
+                $galleryImages = $images->values();
+                $allImagesJson = $galleryImages->map(fn($img) => [
+                    'url' => route('gallery.image', ['filename' => basename($img->image_path)]),
+                    'title' => $img->title
+                ])->toJson(JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT);
+            @endphp
+
+            <div x-data="gallerySlideshow(@js($galleryImages->map(fn($img) => ['url' => route('gallery.image', ['filename' => basename($img->image_path)]), 'title' => $img->title])->values()))">
+
+                <!-- Grid: Latest 3 + View All card -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    @forelse($galleryImages->take(3) as $i => $img)
+                        <div class="group relative overflow-hidden rounded-[2.5rem] aspect-square bg-emerald-50 shadow-lg border border-emerald-100 cursor-pointer"
+                             @click="open({{ $i }})">
+                            <img src="{{ route('gallery.image', ['filename' => basename($img->image_path)]) }}"
+                                 alt="{{ $img->title }}"
+                                 class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-emerald-950/40 opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-8">
+                                <p class="text-white text-sm font-bold tracking-wide">{{ $img->title }}</p>
+                            </div>
                         </div>
-                    </div>
-                @empty
-                    <div class="col-span-full py-20 text-center bg-emerald-50/50 rounded-[3rem] border border-dashed border-emerald-100">
-                        <svg class="w-16 h-16 text-emerald-200 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                        <p class="text-emerald-800/40 font-bold text-lg uppercase tracking-widest">Awaiting the first memory.</p>
-                        <p class="text-emerald-600/50 text-sm mt-2">Log in to your dashboard to upload photos.</p>
-                    </div>
-                @endforelse
-
-                @if($images->count() > 3)
-                    <div class="group relative overflow-hidden rounded-[2.5rem] aspect-square bg-emerald-900 shadow-2xl flex flex-col items-center justify-center text-center p-8 cursor-pointer transform hover:-translate-y-2 transition duration-500"
-                         @click="currentIdx = 3; showSlideshow = true">
-                        <div class="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center text-white mb-4 backdrop-blur-md border border-white/20">
-                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg>
+                    @empty
+                        <div class="col-span-full py-20 text-center bg-emerald-50/50 rounded-[3rem] border border-dashed border-emerald-100">
+                            <svg class="w-16 h-16 text-emerald-200 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                            <p class="text-emerald-800/40 font-bold text-lg uppercase tracking-widest">Awaiting the first memory.</p>
+                            <p class="text-emerald-600/50 text-sm mt-2">Log in to your dashboard to upload photos.</p>
                         </div>
-                        <h4 class="text-white font-bold text-xl font-outfit">View All Memories</h4>
-                        <p class="text-emerald-300 text-xs mt-2 uppercase tracking-widest font-bold">+{{ $images->count() - 3 }} More Stories</p>
-                    </div>
-                @endif
-            </div>
-        </div>
+                    @endforelse
 
-        <!-- Slideshow Modal -->
-        <div x-show="showSlideshow" 
-             class="fixed inset-0 z-[100] flex items-center justify-center bg-emerald-950/95 backdrop-blur-xl"
-             x-transition:enter="transition ease-out duration-300"
-             x-transition:enter-start="opacity-0 scale-95"
-             x-transition:enter-end="opacity-100 scale-100"
-             @keydown.escape.window="showSlideshow = false"
-             style="display: none;">
-            
-            <!-- Close Button -->
-            <button @click="showSlideshow = false" class="absolute top-10 right-10 text-white/50 hover:text-white transition z-[110]">
-                <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-            </button>
+                    @if($galleryImages->count() > 3)
+                        <div class="group relative overflow-hidden rounded-[2.5rem] aspect-square bg-emerald-900 shadow-2xl flex flex-col items-center justify-center text-center p-8 cursor-pointer transform hover:-translate-y-2 transition duration-500"
+                             @click="open(3)">
+                            <div class="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center text-white mb-4 backdrop-blur-md border border-white/20">
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg>
+                            </div>
+                            <h4 class="text-white font-bold text-xl font-outfit">View All Memories</h4>
+                            <p class="text-emerald-300 text-xs mt-2 uppercase tracking-widest font-bold">+{{ $galleryImages->count() - 3 }} More Stories</p>
+                        </div>
+                    @endif
+                </div>
 
-            <!-- Navigation -->
-            <button @click="prev()" class="absolute left-10 p-4 bg-white/5 hover:bg-white/10 text-white rounded-full transition z-[110]">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
-            </button>
-            <button @click="next()" class="absolute right-10 p-4 bg-white/5 hover:bg-white/10 text-white rounded-full transition z-[110]">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-            </button>
+                <!-- Slideshow Modal -->
+                <div x-show="show"
+                     x-transition:enter="transition ease-out duration-300"
+                     x-transition:enter-start="opacity-0"
+                     x-transition:enter-end="opacity-100"
+                     x-transition:leave="transition ease-in duration-200"
+                     x-transition:leave-start="opacity-100"
+                     x-transition:leave-end="opacity-0"
+                     class="fixed inset-0 z-[200] flex items-center justify-center bg-emerald-950/95 backdrop-blur-xl"
+                     @keydown.escape.window="show = false"
+                     @click.self="show = false">
 
-            <!-- Slide Content -->
-            <div class="max-w-5xl w-full px-4 text-center">
-                <div class="relative group">
-                    <img :src="images[currentIdx].url" :alt="images[currentIdx].title" 
-                         class="max-h-[70vh] mx-auto rounded-[3rem] shadow-2xl border-4 border-white/10 object-contain">
-                    <div class="mt-8">
-                        <h3 class="text-3xl font-bold text-white font-outfit" x-text="images[currentIdx].title"></h3>
-                        <p class="text-emerald-400 font-bold uppercase tracking-[0.3em] text-xs mt-4" x-text="(currentIdx + 1) + ' / ' + images.length"></p>
+                    <!-- Close -->
+                    <button @click="show = false"
+                            class="absolute top-6 right-6 z-[210] text-white/60 hover:text-white transition p-2">
+                        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+
+                    <!-- Prev -->
+                    <button @click="prev()"
+                            class="absolute left-4 md:left-10 z-[210] p-4 bg-white/10 hover:bg-white/20 text-white rounded-full transition">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                    </button>
+
+                    <!-- Next -->
+                    <button @click="next()"
+                            class="absolute right-4 md:right-10 z-[210] p-4 bg-white/10 hover:bg-white/20 text-white rounded-full transition">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </button>
+
+                    <!-- Slide -->
+                    <div class="max-w-5xl w-full px-20 text-center">
+                        <template x-if="images.length > 0">
+                            <div>
+                                <img :src="images[idx].url" :alt="images[idx].title"
+                                     class="max-h-[70vh] mx-auto rounded-[3rem] shadow-2xl border-4 border-white/10 object-contain">
+                                <div class="mt-8">
+                                    <h3 class="text-3xl font-bold text-white font-outfit" x-text="images[idx].title"></h3>
+                                    <p class="text-emerald-400 font-bold uppercase tracking-[0.3em] text-xs mt-4" x-text="(idx + 1) + ' / ' + images.length"></p>
+                                </div>
+                            </div>
+                        </template>
                     </div>
                 </div>
-            </div>
+
+            </div><!-- end x-data -->
         </div>
     </section>
+
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('gallerySlideshow', (images) => ({
+                images: images,
+                show: false,
+                idx: 0,
+                open(i) {
+                    this.idx = i;
+                    this.show = true;
+                },
+                next() {
+                    this.idx = (this.idx + 1) % this.images.length;
+                },
+                prev() {
+                    this.idx = (this.idx - 1 + this.images.length) % this.images.length;
+                }
+            }));
+        });
+    </script>
 
     <!-- Executives Section -->
     <section id="executives" class="py-24 bg-emerald-50/30">

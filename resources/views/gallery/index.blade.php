@@ -76,7 +76,7 @@
                 @forelse($images as $img)
                     <div class="group relative bg-white rounded-[2rem] overflow-hidden shadow-lg border border-emerald-50 hover:shadow-2xl transition duration-500">
                         <div class="aspect-square relative overflow-hidden">
-                            <img src="{{ asset('storage/' . $img->image_path) }}" alt="{{ $img->title }}" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
+                            <img src="{{ route('gallery.image', ['filename' => basename($img->image_path)]) }}" alt="{{ $img->title }}" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
                             
                             <!-- Delete Option (Uploader or Admin) -->
                             @if($img->user_id === auth()->id() || auth()->user()->hasAnyRole(['Super Admin', 'Election Admin', 'Finance Admin']))
