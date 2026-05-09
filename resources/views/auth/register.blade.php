@@ -1,172 +1,187 @@
 <x-guest-layout>
-    <div class="max-w-4xl mx-auto">
-        <!-- Header Section -->
-        <div class="text-center mb-12">
-            <h2 class="text-5xl font-black text-emerald-950 font-outfit tracking-tight">Join the Brotherhood</h2>
-            <p class="text-emerald-700/60 mt-4 text-lg font-medium italic">SHIIS Class of 2005 Reunion Portal</p>
-            <div class="mt-6 flex justify-center gap-2">
-                <div class="w-12 h-1.5 bg-emerald-900 rounded-full"></div>
-                <div class="w-4 h-1.5 bg-emerald-200 rounded-full"></div>
-                <div class="w-4 h-1.5 bg-emerald-100 rounded-full"></div>
+    <div class="max-w-5xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <!-- Main Container with subtle glass effect background -->
+        <div class="relative bg-white/80 backdrop-blur-xl rounded-[3.5rem] shadow-2xl shadow-emerald-900/10 border border-emerald-100/50 overflow-hidden">
+            
+            <!-- Top Accent Bar -->
+            <div class="h-2 bg-gradient-to-r from-emerald-400 via-emerald-600 to-emerald-900"></div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12">
+                <!-- Left Sidebar: Info & Branding -->
+                <div class="lg:col-span-4 bg-emerald-900 p-8 lg:p-12 text-white relative overflow-hidden">
+                    <!-- Abstract Background Pattern -->
+                    <div class="absolute inset-0 opacity-10">
+                        <svg class="w-full h-full" fill="currentColor" viewBox="0 0 100 100" preserveAspectRatio="none">
+                            <path d="M0 100 C 20 0 50 0 100 100 Z"></path>
+                        </svg>
+                    </div>
+
+                    <div class="relative z-10 space-y-10">
+                        <div>
+                            <h2 class="text-4xl font-black font-outfit leading-tight">Join the<br>Brotherhood</h2>
+                            <p class="text-emerald-200/60 mt-4 font-medium italic">SHIIS Class of 2005 Reunion</p>
+                        </div>
+
+                        <div class="space-y-8">
+                            <div class="flex gap-4">
+                                <div class="flex-shrink-0 w-10 h-10 bg-emerald-800 rounded-xl flex items-center justify-center border border-emerald-700">
+                                    <svg class="w-5 h-5 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-sm">Verified Network</h4>
+                                    <p class="text-xs text-emerald-300/70 mt-1">Connect with 100+ verified alumni members.</p>
+                                </div>
+                            </div>
+
+                            <div class="flex gap-4">
+                                <div class="flex-shrink-0 w-10 h-10 bg-emerald-800 rounded-xl flex items-center justify-center border border-emerald-700">
+                                    <svg class="w-5 h-5 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"></path></svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-sm">Active Voting</h4>
+                                    <p class="text-xs text-emerald-300/70 mt-1">Participate in executive elections & polls.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Payment Callout -->
+                        <div class="bg-white/10 backdrop-blur-md rounded-3xl p-6 border border-white/10 mt-12">
+                            <span class="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-400 block mb-3">Reunion Contribution</span>
+                            <div class="flex items-baseline gap-2">
+                                <span class="text-3xl font-black font-outfit">₦5,000</span>
+                                <span class="text-xs text-emerald-200/50">minimum</span>
+                            </div>
+                            <div class="mt-6 pt-6 border-t border-white/10">
+                                <p class="text-[10px] text-emerald-200/80 leading-relaxed uppercase tracking-wider font-bold">Pay to Account Below & Upload Evidence</p>
+                                <div class="mt-3 space-y-2">
+                                    <div class="flex justify-between items-center bg-black/20 p-3 rounded-xl border border-white/5">
+                                        <span class="text-xs font-mono font-bold tracking-widest text-emerald-300 select-all">8039245585</span>
+                                        <span class="text-[8px] font-bold text-white/40 uppercase">Moniepoint</span>
+                                    </div>
+                                    <p class="text-[10px] text-center font-bold text-emerald-400 uppercase tracking-widest">Yusuf U. Adam</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Side: Registration Form -->
+                <div class="lg:col-span-8 p-8 lg:p-16">
+                    <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data" class="space-y-12">
+                        @csrf
+
+                        <!-- Profile Header -->
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-1.5 bg-emerald-900 rounded-full"></div>
+                            <h3 class="text-xl font-bold text-emerald-950 font-outfit uppercase tracking-wider">Member Details</h3>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-10">
+                            <!-- Name -->
+                            <div class="space-y-2">
+                                <label for="name" class="text-[10px] font-black text-emerald-900/50 uppercase tracking-widest ml-1">Full Name</label>
+                                <input id="name" type="text" name="name" :value="old('name')" required autofocus 
+                                    class="block w-full bg-emerald-50/50 border-0 border-b-2 border-emerald-100 focus:border-emerald-900 focus:ring-0 transition-all px-0 py-3 text-emerald-950 font-medium placeholder:text-emerald-900/20"
+                                    placeholder="Enter your full name">
+                                <x-input-error :messages="$errors->get('name')" />
+                            </div>
+
+                            <!-- Email Address -->
+                            <div class="space-y-2">
+                                <label for="email" class="text-[10px] font-black text-emerald-900/50 uppercase tracking-widest ml-1">Email Address</label>
+                                <input id="email" type="email" name="email" :value="old('email')" required 
+                                    class="block w-full bg-emerald-50/50 border-0 border-b-2 border-emerald-100 focus:border-emerald-900 focus:ring-0 transition-all px-0 py-3 text-emerald-950 font-medium placeholder:text-emerald-900/20"
+                                    placeholder="email@example.com">
+                                <x-input-error :messages="$errors->get('email')" />
+                            </div>
+
+                            <!-- Phone Number -->
+                            <div class="space-y-2">
+                                <label for="phone_number" class="text-[10px] font-black text-emerald-900/50 uppercase tracking-widest ml-1">WhatsApp Number</label>
+                                <input id="phone_number" type="text" name="phone_number" :value="old('phone_number')" required 
+                                    class="block w-full bg-emerald-50/50 border-0 border-b-2 border-emerald-100 focus:border-emerald-900 focus:ring-0 transition-all px-0 py-3 text-emerald-950 font-medium placeholder:text-emerald-900/20"
+                                    placeholder="e.g. 080...">
+                                <x-input-error :messages="$errors->get('phone_number')" />
+                            </div>
+
+                            <!-- Contribution Amount -->
+                            <div class="space-y-2">
+                                <label for="amount" class="text-[10px] font-black text-emerald-900/50 uppercase tracking-widest ml-1">Contribution (₦)</label>
+                                <input id="amount" type="number" name="amount" :value="old('amount', 5000)" min="5000" required 
+                                    class="block w-full bg-emerald-50/50 border-0 border-b-2 border-emerald-100 focus:border-emerald-900 focus:ring-0 transition-all px-0 py-3 text-emerald-950 font-black"
+                                    placeholder="5000">
+                                <x-input-error :messages="$errors->get('amount')" />
+                            </div>
+                        </div>
+
+                        <!-- Security & Verification -->
+                        <div class="space-y-12 pt-8">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-1.5 bg-emerald-900 rounded-full"></div>
+                                <h3 class="text-xl font-bold text-emerald-950 font-outfit uppercase tracking-wider">Verification & Security</h3>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-10">
+                                <!-- Receipt Upload -->
+                                <div x-data="{ fileName: '' }" class="relative col-span-full">
+                                    <label class="text-[10px] font-black text-emerald-900/50 uppercase tracking-widest ml-1 mb-3 block">Upload Payment Evidence</label>
+                                    <label for="receipt" 
+                                        :class="fileName ? 'bg-emerald-900 text-white shadow-xl scale-[1.01]' : 'bg-emerald-50 text-emerald-900/40 hover:bg-emerald-100'"
+                                        class="flex items-center justify-between w-full px-6 py-8 rounded-[2rem] border-2 border-dashed border-emerald-200 cursor-pointer transition-all group overflow-hidden">
+                                        <div class="flex items-center gap-4">
+                                            <div :class="fileName ? 'bg-white/20' : 'bg-white'" class="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm">
+                                                <svg x-show="!fileName" class="w-6 h-6 text-emerald-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                                                <svg x-show="fileName" class="w-6 h-6 text-white animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                            </div>
+                                            <div class="text-left">
+                                                <p class="font-bold text-sm" x-text="fileName ? 'Evidence Selected' : 'Select Receipt (JPG/PNG/PDF)'"></p>
+                                                <p class="text-[10px] opacity-60 uppercase tracking-widest font-black" x-text="fileName ? fileName : 'Proof of Payment'"></p>
+                                            </div>
+                                        </div>
+                                        <div class="hidden sm:block">
+                                            <span class="px-4 py-2 bg-white/10 rounded-xl text-[8px] font-black uppercase tracking-widest border border-white/10">Browse Files</span>
+                                        </div>
+                                        <input id="receipt" type="file" name="receipt" class="hidden" required @change="fileName = $event.target.files[0].name" />
+                                    </label>
+                                    <x-input-error :messages="$errors->get('receipt')" class="mt-2" />
+                                </div>
+
+                                <!-- Password -->
+                                <div class="space-y-2">
+                                    <label for="password" class="text-[10px] font-black text-emerald-900/50 uppercase tracking-widest ml-1">Create Password</label>
+                                    <input id="password" type="password" name="password" required 
+                                        class="block w-full bg-emerald-50/50 border-0 border-b-2 border-emerald-100 focus:border-emerald-900 focus:ring-0 transition-all px-0 py-3 text-emerald-950 font-medium"
+                                        placeholder="Min. 8 characters">
+                                    <x-input-error :messages="$errors->get('password')" />
+                                </div>
+
+                                <!-- Password Confirmation -->
+                                <div class="space-y-2">
+                                    <label for="password_confirmation" class="text-[10px] font-black text-emerald-900/50 uppercase tracking-widest ml-1">Confirm Password</label>
+                                    <input id="password_confirmation" type="password" name="password_confirmation" required 
+                                        class="block w-full bg-emerald-50/50 border-0 border-b-2 border-emerald-100 focus:border-emerald-900 focus:ring-0 transition-all px-0 py-3 text-emerald-950 font-medium"
+                                        placeholder="Repeat your password">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Footer Actions -->
+                        <div class="flex flex-col sm:flex-row items-center justify-between gap-8 pt-8 border-t border-emerald-50">
+                            <a href="{{ route('login') }}" class="text-[10px] font-black text-emerald-900/40 uppercase tracking-widest hover:text-emerald-900 transition flex items-center gap-2 group">
+                                <svg class="w-4 h-4 group-hover:-translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12"></path></svg>
+                                Already a member? Login
+                            </a>
+
+                            <button type="submit" class="w-full sm:w-auto px-12 py-5 bg-emerald-900 text-white font-bold rounded-3xl shadow-2xl shadow-emerald-900/20 hover:bg-emerald-950 hover:-translate-y-1 transition transform active:scale-95">
+                                Join the Brotherhood
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
 
-        <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data" class="space-y-10">
-            @csrf
-
-            <!-- Section 1: Member Profile -->
-            <div class="bg-white rounded-[3rem] p-10 shadow-2xl shadow-emerald-950/5 border border-emerald-50">
-                <div class="flex items-center gap-4 mb-10 pb-6 border-b border-emerald-50">
-                    <div class="w-12 h-12 bg-emerald-900 rounded-2xl flex items-center justify-center text-white shadow-xl">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                    </div>
-                    <div>
-                        <h3 class="text-2xl font-bold text-emerald-950 font-outfit">Member Profile</h3>
-                        <p class="text-xs text-emerald-600 font-bold uppercase tracking-widest mt-1">Personal & Contact Information</p>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <!-- Name -->
-                    <div class="space-y-2">
-                        <x-input-label for="name" :value="__('Full Name')" class="text-emerald-900 font-bold ml-2" />
-                        <x-text-input id="name" class="block w-full bg-emerald-50/30 border-emerald-100 focus:bg-white focus:ring-emerald-500 rounded-2xl px-6 py-4 shadow-sm transition" type="text" name="name" :value="old('name')" required autofocus placeholder="Enter your full name" />
-                        <x-input-error :messages="$errors->get('name')" class="mt-2" />
-                    </div>
-
-                    <!-- Email Address -->
-                    <div class="space-y-2">
-                        <x-input-label for="email" :value="__('Email Address')" class="text-emerald-900 font-bold ml-2" />
-                        <x-text-input id="email" class="block w-full bg-emerald-50/30 border-emerald-100 focus:bg-white focus:ring-emerald-500 rounded-2xl px-6 py-4 shadow-sm transition" type="email" name="email" :value="old('email')" required placeholder="email@example.com" />
-                        <x-input-error :messages="$errors->get('email')" class="mt-2" />
-                    </div>
-
-                    <!-- Phone Number -->
-                    <div class="space-y-2">
-                        <x-input-label for="phone_number" :value="__('WhatsApp Number')" class="text-emerald-900 font-bold ml-2" />
-                        <x-text-input id="phone_number" class="block w-full bg-emerald-50/30 border-emerald-100 focus:bg-white focus:ring-emerald-500 rounded-2xl px-6 py-4 shadow-sm transition" type="text" name="phone_number" :value="old('phone_number')" required placeholder="e.g. 080..." />
-                        <x-input-error :messages="$errors->get('phone_number')" class="mt-2" />
-                    </div>
-
-                    <!-- Contribution Amount -->
-                    <div class="space-y-2">
-                        <x-input-label for="amount" :value="__('Contribution Amount (₦)')" class="text-emerald-900 font-bold ml-2" />
-                        <x-text-input id="amount" class="block w-full bg-emerald-50/30 border-emerald-100 focus:bg-white focus:ring-emerald-500 rounded-2xl px-6 py-4 shadow-sm transition font-bold text-emerald-950" type="number" name="amount" :value="old('amount', 5000)" min="5000" required />
-                        <div class="flex items-center gap-2 mt-2 ml-2">
-                            <svg class="w-3 h-3 text-red-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
-                            <p class="text-[10px] text-red-500 font-bold uppercase tracking-widest">Minimum contribution: ₦5,000</p>
-                        </div>
-                        <x-input-error :messages="$errors->get('amount')" class="mt-2" />
-                    </div>
-                </div>
-            </div>
-
-            <!-- Section 2: Payment & Security -->
-            <div class="bg-white rounded-[3rem] p-10 shadow-2xl shadow-emerald-950/5 border border-emerald-50 overflow-hidden relative">
-                <!-- Watermark Logo -->
-                <div class="absolute top-0 right-0 p-10 opacity-5 pointer-events-none">
-                    <svg class="w-64 h-64" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                </div>
-
-                <div class="flex items-center gap-4 mb-10 pb-6 border-b border-emerald-50">
-                    <div class="w-12 h-12 bg-emerald-900 rounded-2xl flex items-center justify-center text-white shadow-xl">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
-                    </div>
-                    <div>
-                        <h3 class="text-2xl font-bold text-emerald-950 font-outfit">Payment Verification</h3>
-                        <p class="text-xs text-emerald-600 font-bold uppercase tracking-widest mt-1">Settlement & Account Security</p>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                    <!-- Instructions -->
-                    <div class="space-y-6">
-                        <div class="bg-emerald-900 rounded-[2rem] p-8 text-white shadow-xl">
-                            <p class="text-[10px] font-bold text-emerald-300 uppercase tracking-widest mb-4">Official Payment Account</p>
-                            <div class="space-y-4">
-                                <div>
-                                    <span class="text-[10px] text-emerald-200/60 uppercase block">Account Number</span>
-                                    <span class="text-3xl font-black font-outfit tracking-tighter">8039245585</span>
-                                </div>
-                                <div class="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <span class="text-[10px] text-emerald-200/60 uppercase block">Bank Name</span>
-                                        <span class="font-bold">Moniepoint</span>
-                                    </div>
-                                    <div>
-                                        <span class="text-[10px] text-emerald-200/60 uppercase block">Account Name</span>
-                                        <span class="font-bold">Yusuf U. Adam</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="p-6 bg-emerald-50 rounded-2xl border border-emerald-100 italic text-xs text-emerald-800 leading-relaxed">
-                            "Please upload your payment receipt below. Our finance team will verify the transaction and activate your full membership within 2-4 hours."
-                        </div>
-                    </div>
-
-                    <!-- Upload & Password -->
-                    <div class="space-y-8">
-                        <!-- Receipt Upload -->
-                        <div x-data="{ fileName: '' }" class="relative">
-                            <x-input-label for="receipt" :value="__('Payment Evidence')" class="text-emerald-900 font-bold mb-2 ml-2" />
-                            <label for="receipt" 
-                                :class="fileName ? 'border-emerald-500 bg-emerald-50' : 'border-emerald-100 bg-emerald-50/30'"
-                                class="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-2xl cursor-pointer hover:bg-emerald-50 transition duration-300 group">
-                                <div class="flex flex-col items-center text-center px-4">
-                                    <template x-if="!fileName">
-                                        <div class="flex items-center gap-4">
-                                            <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-emerald-600 shadow-sm">
-                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                                            </div>
-                                            <p class="text-sm text-emerald-900 font-bold">Select Receipt (JPG/PNG/PDF)</p>
-                                        </div>
-                                    </template>
-                                    <template x-if="fileName">
-                                        <div class="flex items-center gap-4">
-                                            <div class="w-10 h-10 bg-emerald-600 rounded-xl flex items-center justify-center text-white shadow-lg animate-pulse">
-                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                                            </div>
-                                            <p class="text-xs text-emerald-900 font-bold truncate max-w-[150px]" x-text="fileName"></p>
-                                        </div>
-                                    </template>
-                                </div>
-                                <input id="receipt" type="file" name="receipt" class="hidden" required @change="fileName = $event.target.files[0].name" />
-                            </label>
-                            <x-input-error :messages="$errors->get('receipt')" class="mt-2" />
-                        </div>
-
-                        <!-- Passwords -->
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div class="space-y-1">
-                                <x-input-label for="password" :value="__('Password')" class="text-emerald-900 font-bold ml-2 text-xs uppercase" />
-                                <x-text-input id="password" class="block w-full bg-emerald-50/30 border-emerald-100 focus:bg-white focus:ring-emerald-500 rounded-xl px-4 py-3" type="password" name="password" required autocomplete="new-password" />
-                                <x-input-error :messages="$errors->get('password')" class="mt-1" />
-                            </div>
-                            <div class="space-y-1">
-                                <x-input-label for="password_confirmation" :value="__('Confirm')" class="text-emerald-900 font-bold ml-2 text-xs uppercase" />
-                                <x-text-input id="password_confirmation" class="block w-full bg-emerald-50/30 border-emerald-100 focus:bg-white focus:ring-emerald-500 rounded-xl px-4 py-3" type="password" name="password_confirmation" required autocomplete="new-password" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Footer Action -->
-            <div class="flex flex-col items-center gap-8 pt-4">
-                <x-primary-button class="w-full sm:w-auto px-20 py-6 bg-emerald-900 hover:bg-emerald-950 shadow-2xl shadow-emerald-900/40 rounded-3xl transition-all transform hover:-translate-y-1 text-lg font-bold">
-                    {{ __('Complete My Registration') }}
-                </x-primary-button>
-                
-                <a class="text-xs text-emerald-700 font-black uppercase tracking-widest hover:text-emerald-950 transition flex items-center gap-2 group" href="{{ route('login') }}">
-                    <svg class="w-4 h-4 group-hover:-translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12"></path></svg>
-                    {{ __('Back to Login') }}
-                </a>
-            </div>
-        </form>
-
-        <div class="mt-20 text-center text-emerald-900/40 text-xs font-bold uppercase tracking-widest pb-10">
+        <div class="mt-12 text-center text-emerald-900/20 text-[10px] font-black uppercase tracking-[0.3em]">
             &copy; {{ date('Y') }} SHIIS '05 Reunion Committee. All Rights Reserved.
         </div>
     </div>

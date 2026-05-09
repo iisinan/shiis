@@ -62,7 +62,7 @@ class AdminController extends Controller
 
         AuditLogger::log('Payment Verified', "Admin verified payment for {$user->name}");
 
-        \Illuminate\Support\Facades\Mail::to($user->email)->send(new \App\Mail\PaymentVerifiedMail($user));
+        \Illuminate\Support\Facades\Mail::to($user->email)->send(new \App\Mail\PaymentVerifiedMail($user, $payment));
 
         return back()->with('success', "Member {$user->name} has been verified and activated.");
     }
