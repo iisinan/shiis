@@ -17,22 +17,22 @@
                     @csrf
 
                     <!-- Section: Payment Instructions -->
-                    <div class="bg-emerald-900 p-8 text-white">
-                        <div class="flex items-start gap-4">
-                            <div class="p-3 bg-emerald-800/50 rounded-xl">
+                    <div class="bg-emerald-900 p-6 sm:p-8 text-white">
+                        <div class="flex flex-col sm:flex-row items-start gap-4">
+                            <div class="p-3 bg-emerald-800/50 rounded-xl hidden sm:block">
                                 <svg class="w-6 h-6 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                             </div>
-                            <div>
+                            <div class="w-full">
                                 <h3 class="text-lg font-bold font-outfit mb-1">Step 1: Make Your Contribution</h3>
-                                <p class="text-emerald-200/80 text-sm leading-relaxed mb-4">Please make a minimum contribution of ₦5,000 to the official reunion account below before filling out this form. You will need to upload your receipt.</p>
+                                <p class="text-emerald-200/80 text-xs sm:text-sm leading-relaxed mb-4">Please make a fixed contribution of ₦5,000 to the official reunion account below before filling out this form.</p>
                                 
-                                <div class="bg-black/20 rounded-2xl p-5 border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                                    <div>
-                                        <p class="text-[10px] text-emerald-300 uppercase tracking-widest font-bold mb-1">Account Number</p>
-                                        <p class="text-3xl font-mono font-black tracking-widest text-white select-all">8039245585</p>
+                                <div class="bg-black/20 rounded-2xl p-4 sm:p-5 border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                    <div class="text-center sm:text-left">
+                                        <p class="text-[9px] text-emerald-300 uppercase tracking-widest font-bold mb-1">Account Number</p>
+                                        <p class="text-2xl sm:text-3xl font-mono font-black tracking-widest text-white select-all">8039245585</p>
                                     </div>
-                                    <div class="sm:text-right">
-                                        <p class="text-[10px] text-emerald-300 uppercase tracking-widest font-bold mb-1">Bank Details</p>
+                                    <div class="text-center sm:text-right border-t border-white/5 pt-3 sm:border-0 sm:pt-0">
+                                        <p class="text-[9px] text-emerald-300 uppercase tracking-widest font-bold mb-1">Bank Details</p>
                                         <p class="font-bold text-white text-sm">Moniepoint</p>
                                         <p class="text-xs text-white/70">Yusuf U. Adam</p>
                                     </div>
@@ -41,7 +41,7 @@
                         </div>
                     </div>
 
-                    <div class="p-8 sm:p-10 space-y-10">
+                    <div class="p-6 sm:p-10 space-y-8 sm:space-y-10">
                         <!-- Section: Personal Details -->
                         <div>
                             <div class="flex items-center gap-3 mb-6">
@@ -92,10 +92,11 @@
                                 <!-- Contribution Amount & Receipt Row -->
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 items-start">
                                     <div class="space-y-2">
-                                        <label for="amount" class="text-xs font-bold text-emerald-900 uppercase tracking-wider ml-1">Amount Paid (₦)</label>
-                                        <input id="amount" type="number" name="amount" :value="old('amount', 5000)" min="5000" required 
-                                            class="block w-full bg-emerald-50/50 border border-emerald-100 focus:border-emerald-500 focus:ring-emerald-500 rounded-xl px-4 py-3 text-emerald-950 font-bold transition-colors">
-                                        <x-input-error :messages="$errors->get('amount')" />
+                                        <label for="amount" class="text-xs font-bold text-emerald-900 uppercase tracking-wider ml-1">Fixed Contribution (₦)</label>
+                                        <input id="amount" type="number" name="amount" value="5000" readonly 
+                                            class="block w-full bg-emerald-100/50 border border-emerald-200 rounded-xl px-4 py-3 text-emerald-950 font-black cursor-not-allowed shadow-inner"
+                                            title="Contribution amount is fixed at ₦5,000">
+                                        <p class="text-[10px] text-emerald-600 font-bold uppercase tracking-widest ml-1">Amount is fixed at ₦5,000</p>
                                     </div>
 
                                     <div x-data="{ fileName: '' }" class="space-y-2">
@@ -111,7 +112,7 @@
                                 </div>
 
                                 <!-- Password Row -->
-                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 bg-emerald-50/30 p-6 rounded-2xl border border-emerald-50">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 bg-emerald-50/30 p-4 sm:p-6 rounded-2xl border border-emerald-50">
                                     <div class="space-y-2">
                                         <label for="password" class="text-xs font-bold text-emerald-900 uppercase tracking-wider ml-1">Create Password</label>
                                         <input id="password" type="password" name="password" required 
