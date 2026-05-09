@@ -25,14 +25,20 @@
                 </div>
             </div>
             @else
-            <div class="bg-emerald-900 rounded-3xl p-8 flex items-center gap-6 shadow-2xl shadow-emerald-900/20 text-white">
-                <div class="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center text-white backdrop-blur-md">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <div class="bg-emerald-900 rounded-3xl p-8 flex flex-col md:flex-row items-center justify-between shadow-2xl shadow-emerald-900/20 text-white gap-6">
+                <div class="flex items-center gap-6">
+                    <div class="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center text-white backdrop-blur-md">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold">Account Fully Activated</h3>
+                        <p class="text-emerald-100/80 text-sm italic">"Salam! Your contribution has been verified. Welcome to the fraternity."</p>
+                    </div>
                 </div>
-                <div>
-                    <h3 class="text-xl font-bold">Account Fully Activated</h3>
-                    <p class="text-emerald-100/80 text-sm italic">"Salam! Your contribution has been verified. Welcome to the fraternity."</p>
-                </div>
+                <a href="{{ route('payment.receipt') }}" class="px-6 py-3 bg-white text-emerald-900 text-sm font-bold rounded-xl shadow-lg hover:bg-emerald-50 transition flex items-center gap-2 shrink-0">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    View Official Receipt
+                </a>
             </div>
             @endif
 

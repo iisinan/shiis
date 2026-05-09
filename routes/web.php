@@ -111,7 +111,7 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/gallery/{gallery}', [GalleryController::class, 'destroy'])->name('gallery.destroy');
 
     Route::post('/payment/additional', [PaymentController::class, 'storeManual'])->name('payment.storeAdditional');
-    
+    Route::get('/payment/receipt', [PaymentController::class, 'receipt'])->name('payment.receipt');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

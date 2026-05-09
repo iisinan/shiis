@@ -108,4 +108,15 @@ class PaymentController extends Controller
 
         return back()->with('success', 'Your payment evidence has been uploaded and is awaiting verification.');
     }
+
+    public function receipt()
+    {
+        $payment = Auth::user()->payments()->where('status', 'success')->latest()->first();
+
+        if (!$payment) {
+            return redirect()->route('dashboard')->with('error', 'No verified payment found.');
+        }
+
+        return view('payment.receipt', compact('payment'));
+    }
 }
