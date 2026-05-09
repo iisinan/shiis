@@ -23,7 +23,7 @@ class HomeController extends Controller
         
         $images = Gallery::latest()->get()->filter(function($img) {
             return \Illuminate\Support\Facades\Storage::disk(config('filesystems.default'))->exists($img->image_path);
-        });
+        })->values();
 
         return view('welcome', compact('images'));
     }
