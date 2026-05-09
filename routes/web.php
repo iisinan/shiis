@@ -20,6 +20,15 @@ Route::get('/agenda', [HomeController::class, 'agenda'])->name('agenda');
 
 Route::get('/gallery', [HomeController::class, 'gallery'])->name('gallery');
 
+// Fail-proof image server
+Route::get('/gallery/image/{filename}', function ($filename) {
+    $path = "gallery/{$filename}";
+    if (!\Illuminate\Support\Facades\Storage::disk('public')->exists($path)) {
+        abort(404);
+    }
+    return \Illuminate\Support\Facades\Storage::disk('public')->response($path);
+})->name('gallery.image');
+
 // Temporary diagnostic route - will be removed after gallery is fixed
 Route::get('/gallery-debug', function () {
     $total = \App\Models\Gallery::count();

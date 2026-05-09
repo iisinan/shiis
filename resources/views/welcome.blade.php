@@ -156,7 +156,7 @@
     <section id="gallery" class="py-24 bg-white" x-data="{ 
         showSlideshow: false, 
         currentIdx: 0,
-        images: {!! $images->map(fn($img) => ['url' => Storage::disk('public')->url($img->image_path), 'title' => $img->title])->toJson() !!},
+        images: {!! $images->map(fn($img) => ['url' => route('gallery.image', ['filename' => basename($img->image_path)]), 'title' => $img->title])->toJson() !!},
         next() { this.currentIdx = (this.currentIdx + 1) % this.images.length },
         prev() { this.currentIdx = (this.currentIdx - 1 + this.images.length) % this.images.length }
     }">
@@ -170,7 +170,7 @@
                 @forelse($images->take(5) as $index => $img)
                     <div class="group relative overflow-hidden rounded-[2.5rem] aspect-square bg-emerald-50 shadow-lg border border-emerald-100 cursor-pointer"
                          @click="currentIdx = {{ $index }}; showSlideshow = true">
-                        <img src="{{ Storage::disk('public')->url($img->image_path) }}" alt="{{ $img->title }}" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
+                        <img src="{{ route('gallery.image', ['filename' => basename($img->image_path)]) }}" alt="{{ $img->title }}" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
                         <div class="absolute inset-0 bg-emerald-950/40 opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-8">
                             <p class="text-white text-sm font-bold tracking-wide">{{ $img->title }}</p>
                         </div>
