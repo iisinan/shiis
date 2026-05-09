@@ -81,6 +81,16 @@ Route::get('/fix-accountant', function () {
     return "Account successfully set up! You can now log in with: Yusufumar3924@gmail.com / password";
 });
 
+// Temporary log viewer - visit https://your-site.com/view-logs to see the error
+Route::get('/view-logs', function () {
+    $path = storage_path('logs/laravel.log');
+    if (!file_exists($path)) return "No logs found at {$path}";
+    
+    $file = file($path);
+    $lines = array_slice($file, -100);
+    return response()->make(implode("", $lines), 200, ['Content-Type' => 'text/plain']);
+});
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
 
