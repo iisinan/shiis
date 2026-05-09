@@ -120,18 +120,24 @@ class PaymentController extends Controller
 
     public function verify(Payment $payment)
     {
-        $payment->update(['status' => 'success']);
+        try {
+            $payment->update(['status' => 'success']);
 
-        // Activate user
-        $user = $payment->user;
-        $user->update([
-            'is_paid' => true,
-            'is_active' => true,
-        ]);
+            // Activate user
+            $user = $payment->user;
+            if ($user) {
+                $user->update([
+                    'is_paid' => true,
+                    'is_active' => true,
+                ]);
+            }
 
-        \App\Services\AuditLogger::log('Payment Verification', "Accountant approved payment of ₦" . number_format($payment->amount, 2) . " for " . $user->name);
+            \App\Services\AuditLogger::log('Payment Verification', "Accountant approved payment of ₦" . number_format($payment->amount, 2) . " for " . ($user->name ?? 'Unknown'));
 
-        return back()->with('success', 'Payment verified successfully. Member account is now active.');
+            return back()->with('success', 'Payment verified successfully. Member account is now active.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Verification failed: ' . $e->getMessage());
+        }
     }
 
     public function export()
