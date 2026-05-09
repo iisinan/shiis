@@ -42,7 +42,7 @@ class AccountantController extends Controller
 
         // Send confirmation email to member
         try {
-            Mail::to($user->email)->queue(new PaymentVerifiedMail($user));
+            Mail::to($user->email)->send(new PaymentVerifiedMail($user));
         } catch (\Exception $e) {
             AuditLogger::log('Email Failure', "Failed to send activation email to {$user->email}");
         }

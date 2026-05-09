@@ -50,7 +50,7 @@ class SendEventNotifications extends Command
 
         foreach ($members as $member) {
             try {
-                Mail::to($member->email)->queue(new $mailableClass());
+                Mail::to($member->email)->send(new $mailableClass());
             } catch (\Exception $e) {
                 $this->error("Failed to send to {$member->email}: " . $e->getMessage());
             }
@@ -64,6 +64,6 @@ class SendEventNotifications extends Command
             'ip_address' => '127.0.0.1'
         ]);
 
-        $this->info("{$humanTitle} notifications queued successfully.");
+        $this->info("{$humanTitle} notifications sent successfully.");
     }
 }

@@ -37,7 +37,7 @@ class RegisteredUserController extends Controller
         // Handle Receipt Upload
         $receiptPath = null;
         if ($request->hasFile('receipt')) {
-            $receiptPath = $request->file('receipt')->store('receipts', 'public');
+            $receiptPath = $request->file('receipt')->store('receipts', config('filesystems.default'));
         }
 
         $user = User::create([
@@ -66,14 +66,14 @@ class RegisteredUserController extends Controller
 
         // Send Acknowledgment Email
         try {
-            Mail::to($user->email)->queue(new RegistrationAcknowledgment($user, $receiptPath));
+            Mail::to($user->email)->send(new RegistrationAcknowledgment($user, $receiptPath));
             
             // Notify Accountants
             $accountants = User::role('Accountant')->get();
             $latestPayment = $user->payments()->latest()->first();
             
             foreach ($accountants as $accountant) {
-                Mail::to($accountant->email)->queue(new \App\Mail\NewRegistrationForAccountantMail($user, $latestPayment));
+                Mail::to($accountant->email)->send(new \App\Mail\NewRegistrationForAccountantMail($user, $latestPayment));
             }
         } catch (\Exception $e) {
             // Silently fail if mail fails, or log it

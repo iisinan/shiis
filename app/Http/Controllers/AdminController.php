@@ -62,7 +62,7 @@ class AdminController extends Controller
 
         AuditLogger::log('Payment Verified', "Admin verified payment for {$user->name}");
 
-        \Illuminate\Support\Facades\Mail::to($user->email)->queue(new \App\Mail\PaymentVerifiedMail($user));
+        \Illuminate\Support\Facades\Mail::to($user->email)->send(new \App\Mail\PaymentVerifiedMail($user));
 
         return back()->with('success', "Member {$user->name} has been verified and activated.");
     }
@@ -95,7 +95,7 @@ class AdminController extends Controller
         // Notify the nominee
         try {
             \Illuminate\Support\Facades\Mail::to($nomination->nominee->email)
-                ->queue(new \App\Mail\NominationApprovedMail($nomination->nominee, $nomination->position));
+                ->send(new \App\Mail\NominationApprovedMail($nomination->nominee, $nomination->position));
         } catch (\Exception $e) {
             \App\Services\AuditLogger::log('Email Failure', "Failed to notify nominee {$nomination->nominee->email}");
         }
@@ -147,7 +147,7 @@ class AdminController extends Controller
             
             foreach ($users as $user) {
                 try {
-                    \Illuminate\Support\Facades\Mail::to($user->email)->queue(new \App\Mail\ElectionResultMail($election, $results));
+                    \Illuminate\Support\Facades\Mail::to($user->email)->send(new \App\Mail\ElectionResultMail($election, $results));
                 } catch (\Exception $e) {
                     \App\Services\AuditLogger::log('Email Failure', "Failed to send election results to {$user->email}");
                 }

@@ -83,7 +83,7 @@ class NominationController extends Controller
                 $admins = User::role(['Super Admin', 'Election Admin'])->get();
                 foreach ($admins as $admin) {
                     \Illuminate\Support\Facades\Mail::to($admin->email)
-                        ->queue(new \App\Mail\NewNominationAdminMail(Auth::user(), User::find(reset($request->nominees)), 'Multiple Positions'));
+                        ->send(new \App\Mail\NewNominationAdminMail(Auth::user(), User::find(reset($request->nominees)), 'Multiple Positions'));
                 }
             } catch (\Exception $e) {
                 // Silently fail mail

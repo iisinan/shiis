@@ -100,7 +100,7 @@ class PaymentController extends Controller
         try {
             $accountants = User::role('Accountant')->get();
             foreach ($accountants as $accountant) {
-                \Illuminate\Support\Facades\Mail::to($accountant->email)->queue(new \App\Mail\NewRegistrationForAccountantMail(Auth::user(), $payment));
+                \Illuminate\Support\Facades\Mail::to($accountant->email)->send(new \App\Mail\NewRegistrationForAccountantMail(Auth::user(), $payment));
             }
         } catch (\Exception $e) {
             // Log failure but proceed
