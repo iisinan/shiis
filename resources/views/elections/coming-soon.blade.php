@@ -14,7 +14,7 @@
                     </div>
                 </div>
                 <div class="space-y-2">
-                    <h2 class="text-5xl md:text-6xl font-black text-emerald-950 font-outfit tracking-tight">Election Polls Closed</h2>
+                    <h2 class="text-5xl md:text-6xl font-black text-emerald-950 font-outfit tracking-tight">Polls Opening Soon</h2>
                     <p class="text-lg text-emerald-800/60 font-medium">The ballot box is currently sealed. Ready for the big day?</p>
                 </div>
             </div>

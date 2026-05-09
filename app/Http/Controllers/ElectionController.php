@@ -12,10 +12,7 @@ class ElectionController extends Controller
 {
     public function index()
     {
-        $election = Election::where('is_active', true)
-            ->where('start_date', '<=', now())
-            ->where('end_date', '>=', now())
-            ->first();
+        $election = Election::where('is_active', true)->latest()->first();
 
         // If no active election, show coming soon or no-active
         if (!$election) {
