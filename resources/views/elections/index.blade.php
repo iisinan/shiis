@@ -17,8 +17,8 @@
                     <p class="text-emerald-100/70 italic text-lg">"Your vote is the foundation of our future leadership."</p>
                 </div>
                 <div class="relative z-10 text-center bg-white/10 backdrop-blur-md px-8 py-4 rounded-3xl border border-white/20">
-                    <p class="text-[10px] uppercase tracking-[0.3em] font-bold text-emerald-200 mb-1">Time Remaining</p>
-                    <p class="text-2xl font-bold font-outfit">{{ \Carbon\Carbon::parse($election->end_date)->diffForHumans(null, true) }}</p>
+                    <p class="text-[10px] uppercase tracking-[0.3em] font-bold text-emerald-200 mb-1">Polls Close</p>
+                    <p class="text-2xl font-bold font-outfit">{{ \Carbon\Carbon::parse($election->end_date)->format('M j, Y - g:i A') }}</p>
                 </div>
             </div>
 
