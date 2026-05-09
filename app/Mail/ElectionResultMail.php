@@ -2,27 +2,29 @@
 
 namespace App\Mail;
 
-use App\Models\User;
+use App\Models\Election;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Storage;
 
-class RegistrationAcknowledgment extends Mailable
+class ElectionResultMail extends Mailable
 {
     use Queueable, SerializesModels;
+
+    public $election;
+    public $results;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(
-        public User $user,
-        public string $receiptPath
-    ) {}
+    public function __construct(Election $election, $results)
+    {
+        $this->election = $election;
+        $this->results = $results;
+    }
 
     /**
      * Get the message envelope.
@@ -30,7 +32,7 @@ class RegistrationAcknowledgment extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Registration Acknowledgment - SHIIS Class of 2005 Reunion',
+            subject: 'SHIIS \'05: Election Results Announced!',
         );
     }
 
@@ -40,7 +42,7 @@ class RegistrationAcknowledgment extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.registration-acknowledgment',
+            markdown: 'emails.election-result',
         );
     }
 
@@ -51,15 +53,6 @@ class RegistrationAcknowledgment extends Mailable
      */
     public function attachments(): array
     {
-        $disk = \Illuminate\Support\Facades\Storage::disk(config('filesystems.default'));
-        
-        if ($this->receiptPath && $disk->exists($this->receiptPath)) {
-            return [
-                Attachment::fromStorageDisk(config('filesystems.default'), $this->receiptPath)
-                    ->as('payment_receipt.' . pathinfo($this->receiptPath, PATHINFO_EXTENSION))
-            ];
-        }
-
         return [];
     }
 }

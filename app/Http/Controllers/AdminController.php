@@ -77,8 +77,34 @@ class AdminController extends Controller
 
     public function toggleElection(Election $election)
     {
-        $election->update(['is_active' => !$election->is_active]);
-        return back()->with('success', 'Election status updated.');
+        $newState = !$election->is_active;
+        $election->update(['is_active' => $newState]);
+
+        if (!$newState) {
+            // Election was just closed. Compile results and send emails.
+            $results = \App\Models\Vote::where('election_id', $election->id)
+                ->select('position', 'candidate_id', \DB::raw('count(*) as total_votes'))
+                ->groupBy('position', 'candidate_id')
+                ->with('candidate.user')
+                ->get()
+                ->groupBy('position');
+
+            $users = \App\Models\User::where('is_active', true)->where('is_paid', true)->get();
+            
+            foreach ($users as $user) {
+                try {
+                    \Illuminate\Support\Facades\Mail::to($user->email)->queue(new \App\Mail\ElectionResultMail($election, $results));
+                } catch (\Exception $e) {
+                    \App\Services\AuditLogger::log('Email Failure', "Failed to send election results to {$user->email}");
+                }
+            }
+
+            \App\Services\AuditLogger::log('Election Closed', "Election '{$election->title}' was closed and results broadcasted.");
+            return back()->with('success', 'Election closed and results broadcasted to all members.');
+        }
+
+        \App\Services\AuditLogger::log('Election Opened', "Election '{$election->title}' was opened.");
+        return back()->with('success', 'Election opened successfully.');
     }
 
     public function activityLogs()
