@@ -42,6 +42,38 @@ Route::get('/storage-proxy/{folder}/{filename}', function ($folder, $filename) {
     abort(404, "File not found in storage.");
 })->name('storage.proxy');
 
+// Email Diagnostic Route - visit /mail-test to see exact error
+Route::get('/mail-test', function () {
+    $config = [
+        'MAIL_MAILER' => config('mail.default'),
+        'MAIL_HOST' => config('mail.mailers.smtp.host'),
+        'MAIL_PORT' => config('mail.mailers.smtp.port'),
+        'MAIL_ENCRYPTION' => config('mail.mailers.smtp.encryption'),
+        'MAIL_USERNAME' => config('mail.mailers.smtp.username') ? '***SET***' : '***EMPTY***',
+        'MAIL_PASSWORD' => config('mail.mailers.smtp.password') ? '***SET***' : '***EMPTY***',
+        'MAIL_FROM_ADDRESS' => config('mail.from.address'),
+        'MAIL_FROM_NAME' => config('mail.from.name'),
+    ];
+
+    try {
+        \Illuminate\Support\Facades\Mail::raw('This is a test email from SHIIS platform. If you receive this, email is working!', function ($message) {
+            $message->to(config('mail.from.address'))
+                    ->subject('SHIIS Email Test - ' . now()->format('H:i:s'));
+        });
+        return response()->json([
+            'status' => 'SUCCESS',
+            'message' => 'Test email sent to ' . config('mail.from.address'),
+            'config' => $config,
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'FAILED',
+            'error' => $e->getMessage(),
+            'config' => $config,
+        ], 500);
+    }
+});
+
 // Temporary diagnostic route - will be removed after gallery is fixed
 Route::get('/gallery-debug', function () {
     $total = \App\Models\Gallery::count();
