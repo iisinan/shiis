@@ -63,6 +63,22 @@ Route::get('/gallery-debug', function () {
     ], 200, [], JSON_PRETTY_PRINT);
 });
 
+// Temporary account fix - visit https://your-site.com/fix-accountant to set up the user
+Route::get('/fix-accountant', function () {
+    $user = \App\Models\User::updateOrCreate(
+        ['email' => 'Yusufumar3924@gmail.com'],
+        [
+            'name' => 'Yusuf Umar',
+            'password' => bcrypt('password'),
+            'is_paid' => true,
+            'is_active' => true,
+            'phone_number' => '08000000002',
+        ]
+    );
+    $user->syncRoles(['Accountant']);
+    return "Account successfully set up! You can now log in with: Yusufumar3924@gmail.com / password";
+});
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
 
