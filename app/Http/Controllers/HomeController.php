@@ -13,6 +13,13 @@ class HomeController extends Controller
 {
     public function welcome()
     {
+        if (!file_exists(public_path('storage'))) {
+            try {
+                \Illuminate\Support\Facades\Artisan::call('storage:link');
+            } catch (\Exception $e) {
+                // Fail silently if permissions prevent link creation
+            }
+        }
         $images = Gallery::where('is_published', true)->latest()->get();
         return view('welcome', compact('images'));
     }
