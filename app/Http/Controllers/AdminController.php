@@ -60,21 +60,20 @@ class AdminController extends Controller
 
     public function approveNomination(Request $request, Nomination $nomination)
     {
+        $nomination->update(['status' => 'approved']);
+        
         $election = Election::where('is_active', true)->first();
         
-        if (!$election) {
-            return back()->with('error', 'No active election found. Please create one first.');
+        if ($election) {
+            Candidate::firstOrCreate([
+                'election_id' => $election->id,
+                'user_id' => $nomination->nominee_id,
+                'position' => $nomination->position,
+            ], [
+                'manifesto' => $nomination->reason,
+                'status' => 'approved',
+            ]);
         }
-
-        Candidate::create([
-            'election_id' => $election->id,
-            'user_id' => $nomination->nominee_id,
-            'position' => $nomination->position,
-            'manifesto' => $nomination->reason, // Use nomination reason as initial manifesto
-            'status' => 'approved',
-        ]);
-
-        $nomination->update(['status' => 'approved']);
 
         AuditLogger::log('Nomination Approved', "Admin approved nomination for {$nomination->nominee->name} as {$nomination->position}");
 
@@ -86,7 +85,7 @@ class AdminController extends Controller
             \App\Services\AuditLogger::log('Email Failure', "Failed to notify nominee {$nomination->nominee->email}");
         }
 
-        return back()->with('success', 'Nomination approved and member is now a candidate.');
+        return back()->with('success', 'Nomination approved. If an election is active, they have been added as a candidate.');
     }
 
     public function initializeElection()
@@ -103,8 +102,11 @@ class AdminController extends Controller
             'is_active' => true,
         ]);
 
+        // Sync all approved nominations to this new election
+        $this->syncCandidates($election);
+
         \App\Services\AuditLogger::log('Election Opened', "Election '{$election->title}' was initialized and opened.");
-        return back()->with('success', 'New election created and opened successfully.');
+        return back()->with('success', 'New election created and opened successfully with all approved candidates.');
     }
 
     public function toggleElection(Election $election)
@@ -112,7 +114,12 @@ class AdminController extends Controller
         $newState = !$election->is_active;
         $election->update(['is_active' => $newState]);
 
-        if (!$newState) {
+        if ($newState) {
+            // Opening election - sync candidates
+            $this->syncCandidates($election);
+            $msg = 'Election opened successfully with all approved candidates.';
+            AuditLogger::log('Election Opened', "Election '{$election->title}' was opened.");
+        } else {
             // Election was just closed. Compile results and send emails.
             $results = \App\Models\Vote::where('election_id', $election->id)
                 ->select('position', 'candidate_id', \DB::raw('count(*) as total_votes'))
@@ -131,12 +138,27 @@ class AdminController extends Controller
                 }
             }
 
+            $msg = 'Election closed and results broadcasted to all members.';
             \App\Services\AuditLogger::log('Election Closed', "Election '{$election->title}' was closed and results broadcasted.");
-            return back()->with('success', 'Election closed and results broadcasted to all members.');
         }
 
-        \App\Services\AuditLogger::log('Election Opened', "Election '{$election->title}' was opened.");
-        return back()->with('success', 'Election opened successfully.');
+        return back()->with('success', $msg);
+    }
+
+    private function syncCandidates(Election $election)
+    {
+        $approvedNominations = Nomination::where('status', 'approved')->get();
+        
+        foreach ($approvedNominations as $nom) {
+            Candidate::firstOrCreate([
+                'election_id' => $election->id,
+                'user_id' => $nom->nominee_id,
+                'position' => $nom->position,
+            ], [
+                'manifesto' => $nom->reason,
+                'status' => 'approved',
+            ]);
+        }
     }
 
     public function toggleNominations()
