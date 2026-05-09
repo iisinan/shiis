@@ -23,19 +23,23 @@ Route::get('/gallery', [HomeController::class, 'gallery'])->name('gallery');
 // Fail-proof storage proxy (Supports Gallery and Receipts on Local and R2)
 Route::get('/storage-proxy/{folder}/{filename}', function ($folder, $filename) {
     $path = "{$folder}/{$filename}";
-    $diskName = config('filesystems.default');
-    $disk = \Illuminate\Support\Facades\Storage::disk($diskName);
-    
-    if (!$disk->exists($path)) {
-        \Illuminate\Support\Facades\Log::error("File NOT found. Disk: {$diskName}, Path: {$path}");
-        abort(404, "File not found on {$diskName} storage.");
+    $defaultDisk = config('filesystems.default');
+
+    // Try default disk first (R2 on cloud), then fall back to public disk for legacy files
+    $disksToTry = array_unique([$defaultDisk, 'public']);
+
+    foreach ($disksToTry as $diskName) {
+        $disk = \Illuminate\Support\Facades\Storage::disk($diskName);
+        if ($disk->exists($path)) {
+            \Illuminate\Support\Facades\Log::info("Serving file from disk [{$diskName}]: {$path}");
+            $file = $disk->get($path);
+            $type = $disk->mimeType($path);
+            return response($file)->header('Content-Type', $type);
+        }
     }
 
-    \Illuminate\Support\Facades\Log::info("Serving file. Disk: {$diskName}, Path: {$path}");
-    $file = $disk->get($path);
-    $type = $disk->mimeType($path);
-
-    return response($file)->header('Content-Type', $type);
+    \Illuminate\Support\Facades\Log::error("File NOT found on any disk. Path: {$path}");
+    abort(404, "File not found in storage.");
 })->name('storage.proxy');
 
 // Temporary diagnostic route - will be removed after gallery is fixed

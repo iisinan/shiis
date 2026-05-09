@@ -84,7 +84,7 @@ class PaymentController extends Controller
             'receipt' => 'required|file|mimes:jpg,jpeg,png,pdf|max:5120',
         ]);
 
-        $receiptPath = $request->file('receipt')->store('receipts', 'public');
+        $receiptPath = $request->file('receipt')->store('receipts', config('filesystems.default'));
 
         $payment = Payment::create([
             'user_id' => Auth::id(),
