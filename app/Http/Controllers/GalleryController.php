@@ -6,6 +6,8 @@ use App\Models\Gallery;
 use Illuminate\Http\Request;
 use App\Services\AuditLogger;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class GalleryController extends Controller
 {
@@ -17,45 +19,63 @@ class GalleryController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'images' => 'required|array|max:10',
-            'images.*' => 'image|mimes:jpg,jpeg,png,webp,jfif|max:20480',
+        $validated = $request->validate([
+            'title'    => 'required|string|max:255',
+            'images'   => 'required|array|min:1|max:10',
+            'images.*' => 'required|file|image|mimes:jpg,jpeg,png,webp,gif|max:20480',
         ]);
 
         $count = 0;
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $image) {
-                $path = $image->store('gallery');
-                
+        $errors = [];
+
+        foreach ($request->file('images', []) as $image) {
+            try {
+                // Store on the public disk so it is accessible via the web
+                $path = $image->store('gallery', 'public');
+
+                if (!$path) {
+                    $errors[] = "Failed to store image: " . $image->getClientOriginalName();
+                    continue;
+                }
+
                 Gallery::create([
-                    'title' => $request->title,
-                    'image_path' => $path,
+                    'title'        => $validated['title'],
+                    'image_path'   => $path,
                     'is_published' => true,
-                    'user_id' => Auth::id(),
+                    'user_id'      => Auth::id(),
                 ]);
+
                 $count++;
+            } catch (\Throwable $e) {
+                Log::error('Gallery upload error: ' . $e->getMessage());
+                $errors[] = "Error uploading " . $image->getClientOriginalName() . ": " . $e->getMessage();
             }
-            
-            $role = Auth::user()->hasAnyRole(['Super Admin', 'Election Admin', 'Finance Admin']) ? 'Admin' : 'Member';
-            AuditLogger::log('Gallery Contribution', "{$role} (" . Auth::user()->name . ") uploaded {$count} images to the shared gallery: '{$request->title}'");
         }
 
-        return back()->with('success', "Thank you! {$count} images added to our shared memories.");
+        if ($count > 0) {
+            AuditLogger::log('Gallery Contribution', Auth::user()->name . " uploaded {$count} image(s): '{$validated['title']}'");
+        }
+
+        if (!empty($errors)) {
+            return back()
+                ->with('warning', implode(' | ', $errors))
+                ->with('success', $count > 0 ? "{$count} image(s) uploaded successfully." : null);
+        }
+
+        return back()->with('success', "Thank you! {$count} image(s) added to our shared memories.");
     }
 
     public function destroy(Gallery $gallery)
     {
-        // Only uploader or admin can delete
         if ($gallery->user_id !== Auth::id() && !Auth::user()->hasAnyRole(['Super Admin', 'Election Admin', 'Finance Admin'])) {
             abort(403);
         }
 
-        \Storage::disk('public')->delete($gallery->image_path);
+        Storage::disk('public')->delete($gallery->image_path);
         $title = $gallery->title;
         $gallery->delete();
 
-        AuditLogger::log('Gallery Deletion', Auth::user()->name . " removed an image from the gallery: {$title}");
+        AuditLogger::log('Gallery Deletion', Auth::user()->name . " removed an image: {$title}");
 
         return back()->with('success', 'Memory removed from gallery.');
     }

@@ -13,7 +13,7 @@ class HomeController extends Controller
 {
     public function welcome()
     {
-        $images = Gallery::latest()->get();
+        $images = Gallery::where('is_published', true)->latest()->get();
         return view('welcome', compact('images'));
     }
 

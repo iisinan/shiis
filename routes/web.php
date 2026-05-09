@@ -20,6 +20,18 @@ Route::get('/agenda', [HomeController::class, 'agenda'])->name('agenda');
 
 Route::get('/gallery', [HomeController::class, 'gallery'])->name('gallery');
 
+// Temporary diagnostic route - will be removed after gallery is fixed
+Route::get('/gallery-debug', function () {
+    $total = \App\Models\Gallery::count();
+    $images = \App\Models\Gallery::latest()->take(5)->get(['id', 'title', 'image_path', 'is_published', 'user_id', 'created_at']);
+    return response()->json([
+        'total_in_db' => $total,
+        'latest_5'    => $images,
+        'storage_link_exists' => file_exists(public_path('storage')),
+        'filesystem_disk' => config('filesystems.default'),
+    ]);
+});
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
 
