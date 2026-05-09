@@ -10,6 +10,7 @@ class AuditLog extends Model
         'user_id',
         'action',
         'description',
+        'ip_address',
     ];
 
     public function user()
