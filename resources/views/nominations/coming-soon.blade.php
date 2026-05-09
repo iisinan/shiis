@@ -73,7 +73,10 @@
                         const now = new Date().getTime();
                         const distance = targetDate - now;
                         if(distance < 0) {
-                            window.location.reload();
+                            this.days = '00';
+                            this.hours = '00';
+                            this.minutes = '00';
+                            this.seconds = '00';
                             return;
                         }
                         this.days = String(Math.floor(distance / (1000 * 60 * 60 * 24))).padStart(2, '0');

@@ -15,10 +15,13 @@ class NominationController extends Controller
         $isActive = \Illuminate\Support\Facades\Cache::get('nominations_active', false);
 
         if (!$isActive) {
+            $eventDate = \Carbon\Carbon::parse('2026-05-31');
+            $nominationDate = $eventDate->copy()->subDay()->startOfDay();
+
             return view('nominations.coming-soon', [
-                'activeDate' => 'To Be Announced by Admin',
-                'rawDate' => null,
-                'daysToWait' => null
+                'activeDate' => 'Subject to Admin Activation',
+                'rawDate' => $nominationDate->format('Y-m-d H:i:s'),
+                'daysToWait' => max(0, now()->diffInDays($nominationDate, false))
             ]);
         }
 
