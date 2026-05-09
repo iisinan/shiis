@@ -68,6 +68,7 @@ Route::middleware(['auth', 'role:Super Admin|Election Admin|Finance Admin'])->gr
     Route::post('/admin/agenda', [AdminAgendaController::class, 'store'])->name('admin.agenda.store');
     Route::put('/admin/agenda/{agenda}', [AdminAgendaController::class, 'update'])->name('admin.agenda.update');
     Route::delete('/admin/agenda/{agenda}', [AdminAgendaController::class, 'destroy'])->name('admin.agenda.destroy');
+    Route::get('/admin/gallery', [GalleryController::class, 'index'])->name('admin.gallery.index');
 });
 
 Route::middleware(['auth', 'role:Accountant|Super Admin'])->group(function () {

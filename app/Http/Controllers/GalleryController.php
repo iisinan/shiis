@@ -26,7 +26,7 @@ class GalleryController extends Controller
         $count = 0;
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
-                $path = $image->store('gallery', 'public');
+                $path = $image->store('gallery');
                 
                 Gallery::create([
                     'title' => $request->title,
