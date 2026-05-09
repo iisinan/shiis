@@ -156,11 +156,7 @@
     <section id="gallery" class="py-24 bg-white" x-data="{ 
         showSlideshow: false, 
         currentIdx: 0,
-        images: [
-            @foreach($images as $img)
-                { url: '{{ asset('storage/' . $img->image_path) }}', title: '{{ $img->title }}' },
-            @endforeach
-        ],
+        images: {!! $images->map(fn($img) => ['url' => asset('storage/' . $img->image_path), 'title' => $img->title])->toJson() !!},
         next() { this.currentIdx = (this.currentIdx + 1) % this.images.length },
         prev() { this.currentIdx = (this.currentIdx - 1 + this.images.length) % this.images.length }
     }">
