@@ -166,8 +166,8 @@
                 <p class="text-emerald-700/60 max-w-xl mx-auto">A visual journey through the moments that shaped our brotherhood at SHIIS.</p>
             </div>
             
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
-                @forelse($images->take(5) as $index => $img)
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                @forelse($images->take(3) as $index => $img)
                     <div class="group relative overflow-hidden rounded-[2.5rem] aspect-square bg-emerald-50 shadow-lg border border-emerald-100 cursor-pointer"
                          @click="currentIdx = {{ $index }}; showSlideshow = true">
                         <img src="{{ route('gallery.image', ['filename' => basename($img->image_path)]) }}" alt="{{ $img->title }}" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
@@ -183,14 +183,14 @@
                     </div>
                 @endforelse
 
-                @if($images->count() > 5)
+                @if($images->count() > 3)
                     <div class="group relative overflow-hidden rounded-[2.5rem] aspect-square bg-emerald-900 shadow-2xl flex flex-col items-center justify-center text-center p-8 cursor-pointer transform hover:-translate-y-2 transition duration-500"
-                         @click="currentIdx = 5; showSlideshow = true">
+                         @click="currentIdx = 3; showSlideshow = true">
                         <div class="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center text-white mb-4 backdrop-blur-md border border-white/20">
                             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg>
                         </div>
                         <h4 class="text-white font-bold text-xl font-outfit">View All Memories</h4>
-                        <p class="text-emerald-300 text-xs mt-2 uppercase tracking-widest font-bold">+{{ $images->count() - 5 }} More Stories</p>
+                        <p class="text-emerald-300 text-xs mt-2 uppercase tracking-widest font-bold">+{{ $images->count() - 3 }} More Stories</p>
                     </div>
                 @endif
             </div>
