@@ -150,6 +150,30 @@ class AdminController extends Controller
         return back()->with('success', "Nominations are now {$status}.");
     }
 
+    public function systemReset(Request $request)
+    {
+        // Require explicit confirmation keyword for safety
+        if ($request->keyword !== 'RESET-ALL') {
+            return back()->with('error', 'Invalid confirmation keyword. System reset aborted.');
+        }
+
+        // Wipe Database and Reseed
+        \Illuminate\Support\Facades\Artisan::call('migrate:fresh', [
+            '--seed' => true,
+            '--force' => true
+        ]);
+
+        // Clear Uploaded Files
+        \Illuminate\Support\Facades\Storage::disk(config('filesystems.default'))->deleteDirectory('receipts');
+        \Illuminate\Support\Facades\Storage::disk(config('filesystems.default'))->deleteDirectory('gallery');
+
+        // Clear Cache
+        \Illuminate\Support\Facades\Cache::flush();
+
+        // Redirect to login because their session is dropped
+        return redirect()->route('login')->with('success', 'Nuclear Reset Complete. The system is completely fresh. Please log in with the default admin credentials.');
+    }
+
     public function activityLogs()
     {
         $logs = \App\Models\AuditLog::with('user')->latest()->paginate(50);

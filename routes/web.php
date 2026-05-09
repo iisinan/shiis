@@ -131,6 +131,8 @@ Route::middleware(['auth', 'role:Super Admin|Election Admin|Finance Admin'])->gr
     Route::post('/admin/elections/initialize', [AdminController::class, 'initializeElection'])->name('admin.elections.initialize');
     Route::post('/admin/elections/{election}/toggle', [AdminController::class, 'toggleElection'])->name('admin.elections.toggle');
 
+    Route::post('/admin/system/reset', [AdminController::class, 'systemReset'])->name('admin.system.reset');
+
     Route::get('/admin/logs', [AdminController::class, 'activityLogs'])->name('admin.logs');
     
     Route::get('/admin/announcements', [AnnouncementController::class, 'index'])->name('admin.announcements.index');
