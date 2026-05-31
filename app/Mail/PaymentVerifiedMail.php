@@ -12,7 +12,6 @@ use Illuminate\Queue\SerializesModels;
 class PaymentVerifiedMail extends Mailable
 {
     use Queueable, SerializesModels;
-    use \Illuminate\Mail\Mailables\Attachment;
 
     public function __construct(public User $user, public ?\App\Models\Payment $payment = null) {}
 
